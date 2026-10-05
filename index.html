@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,5 +9,61 @@
 </head>
 <body>
     
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Test</title>
+</head>
+
+<body>
+    <h1>Supabase Test</h1>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        const SUPABASE_URL = "https://kaqixbkbuydypmcsxdcx.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_kiDnk-ZurC_g0KrN7Imc2g_kffMSuJu";
+
+        const db = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+        async function testDatabase() {
+
+            const { error: insertError } = await db
+                .from("demo")
+                .insert({
+                    name: "a",
+                    number: 12
+                });
+
+            if (insertError) {
+                console.error("INSERT FAILED:", insertError);
+                return;
+            }
+
+            console.log("Inserted!");
+
+
+            const { data, error: selectError } = await db
+                .from("demo")
+                .select("*");
+
+            if (selectError) {
+                console.error("SELECT FAILED:", selectError);
+                return;
+            }
+
+            console.log(data);
+        }
+
+
+        testDatabase();
+    </script>
 </body>
 </html>
