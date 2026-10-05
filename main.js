@@ -1,24 +1,26 @@
-function Day(times){
-    this.times = times;
-}
-
-function Availability(day){
-    this.day = day;
-}
-
-function Tutor(name, language, subject, year){
-    this.name = name;
-    this.language = language;
-    this.subject = subject;
-    this.year = year;
-    this.availability = [];
-};
-
 const tutors = [];
 
-function addTutor(name, language, subject, year, availability){
-    tutors.push(new Tutor(name, language, subject, year));
-    tutors[tutors.length-1].availability = availability;
-    console.log(tutors);
+function addTutor({ name, language, subjects, year, availability = [] }) {
+    const tutor = {
+        id: `tutor-${tutors.length + 1}`,
+        name,
+        language,
+        subjects,
+        year,
+        availability
+    };
+
+    tutors.push(tutor);
+    return tutor;
 }
-addTutor("h", "jap", ["eng", "mat"], 13, new Availability(new Day([[2,4], [13, 14]])));
+
+addTutor({
+    name: "h",
+    language: "jap",
+    subjects: ["eng", "mat"],
+    year: 13,
+    availability: [
+        { day: "monday", start: "02:00", end: "04:00" },
+        { day: "monday", start: "13:00", end: "14:00" }
+    ]
+});
