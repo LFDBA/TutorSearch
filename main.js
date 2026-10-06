@@ -1,11 +1,11 @@
 const tutors = [];
 
-function addTutor({ name, language, subjects, year, availability = [] }) {
+function addTutor({ name, language, subject, year, availability = [] }) {
     const tutor = {
         id: `tutor-${tutors.length + 1}`,
         name,
         language,
-        subjects,
+        subject,
         year,
         availability
     };
@@ -17,10 +17,11 @@ function addTutor({ name, language, subjects, year, availability = [] }) {
 addTutor({
     name: "h",
     language: "jap",
-    subjects: ["eng", "mat"],
+    subject: ["eng", "mat"],
     year: 13,
     availability: [
         { day: "monday", start: "02:00", end: "04:00" },
         { day: "monday", start: "13:00", end: "14:00" }
     ]
 });
+
