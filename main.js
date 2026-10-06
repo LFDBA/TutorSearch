@@ -1,5 +1,7 @@
+//Tutors array
 const tutors = [];
 
+//Add tutor to tutors array. Params: name - string, lang - string array, sub - string array, year - int array, avail - json array
 function addTutor({ name, language, subject, year, availability = [] }) {
     const tutor = {
         id: `tutor-${tutors.length + 1}`,
@@ -14,6 +16,7 @@ function addTutor({ name, language, subject, year, availability = [] }) {
     return tutor;
 }
 
+//Functionality check
 addTutor({
     name: "h",
     language: "jap",
