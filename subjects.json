@@ -1,0 +1,432 @@
+{
+  "school": "Northcote College",
+  "academicYear": 2026,
+  "lastVerified": "2026-10-06",
+  "source": {
+    "name": "Northcote College Course Directory 2026",
+    "schoolPage": "https://www.northcote.school.nz/teaching-learning/course-directory",
+    "directory": "https://anyflip.com/bmqa/zhai/basic",
+    "textIndex": "https://online.anyflip.com/bmqa/zhai/mobile/javascript/search_config.js"
+  },
+  "notes": [
+    "Year availability is based on the 2026 course directory summary and individual course pages.",
+    "This list covers courses offered directly by Northcote College.",
+    "Demand-dependent e-learning courses are excluded.",
+    "A listed course may still have prerequisites or require departmental approval.",
+    "Senior English-language courses are assigned by language level rather than strictly by school year."
+  ],
+  "yearRequirements": {
+    "10": {
+      "required": [
+        "English",
+        "Mathematics",
+        "Science",
+        "Social Studies",
+        "Physical Education",
+        "Health"
+      ],
+      "summary": "Students also choose one Arts option, one Technology option, and a third option from the published option list."
+    },
+    "11": {
+      "required": [
+        "English",
+        "Mathematics",
+        "Science or Geography"
+      ],
+      "summary": "Most students take six NCEA subjects."
+    },
+    "12": {
+      "required": [
+        "English"
+      ],
+      "recommended": [
+        "Mathematics",
+        "A Science subject"
+      ],
+      "summary": "Most students take six NCEA subjects."
+    },
+    "13": {
+      "summary": "Students take a full-time course of five or six subjects."
+    }
+  },
+  "subjects": [
+    {
+      "id": "english",
+      "name": "English",
+      "learningArea": "English",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "media-literacy",
+      "name": "Media Literacy",
+      "learningArea": "English",
+      "years": [9]
+    },
+    {
+      "id": "english-language-learning",
+      "name": "English Language Learning",
+      "learningArea": "English Language",
+      "years": [9, 10]
+    },
+    {
+      "id": "english-language-acceleration-communication",
+      "name": "English Language Acceleration — Communication",
+      "learningArea": "English Language",
+      "years": [10]
+    },
+    {
+      "id": "english-language-acceleration-literacy",
+      "name": "English Language Acceleration — Structured Literacy",
+      "learningArea": "English Language",
+      "years": [10]
+    },
+    {
+      "id": "english-for-academic-purposes",
+      "name": "English for Academic Purposes",
+      "learningArea": "English Language",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "english-for-communication-purposes",
+      "name": "English for Communication Purposes",
+      "learningArea": "English Language",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "english-for-academic-literacy",
+      "name": "English for Academic Literacy",
+      "learningArea": "English Language",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "media-studies",
+      "name": "Media Studies",
+      "learningArea": "English",
+      "years": [10, 11, 12, 13]
+    },
+    {
+      "id": "media-production",
+      "name": "Media Production",
+      "learningArea": "English",
+      "years": [12, 13]
+    },
+    {
+      "id": "english-through-visual-language",
+      "name": "English Through Visual Language",
+      "learningArea": "English",
+      "years": [13]
+    },
+    {
+      "id": "mathematics",
+      "name": "Mathematics",
+      "learningArea": "Mathematics",
+      "years": [9, 10, 12, 13]
+    },
+    {
+      "id": "external-mathematics",
+      "name": "Mathematics (External)",
+      "learningArea": "Mathematics",
+      "years": [11]
+    },
+    {
+      "id": "internal-mathematics",
+      "name": "Mathematics (Internal)",
+      "learningArea": "Mathematics",
+      "years": [11]
+    },
+    {
+      "id": "mathematics-towards-statistics-and-calculus",
+      "name": "Mathematics Towards Statistics and Calculus",
+      "learningArea": "Mathematics",
+      "years": [12]
+    },
+    {
+      "id": "calculus",
+      "name": "Calculus",
+      "learningArea": "Mathematics",
+      "years": [13]
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "learningArea": "Mathematics",
+      "years": [13]
+    },
+    {
+      "id": "science",
+      "name": "Science",
+      "learningArea": "Science",
+      "years": [9, 10, 12, 13]
+    },
+    {
+      "id": "biology",
+      "name": "Biology",
+      "learningArea": "Science",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "chemistry",
+      "name": "Chemistry",
+      "learningArea": "Science",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "earth-and-space-science",
+      "name": "Earth and Space Science",
+      "learningArea": "Science",
+      "years": [11]
+    },
+    {
+      "id": "physics",
+      "name": "Physics",
+      "learningArea": "Science",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "art",
+      "name": "Art",
+      "learningArea": "Arts",
+      "years": [9, 10]
+    },
+    {
+      "id": "art-design",
+      "name": "Art Design",
+      "learningArea": "Arts",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "painting",
+      "name": "Painting",
+      "learningArea": "Arts",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "photography",
+      "name": "Photography",
+      "learningArea": "Arts",
+      "years": [12, 13]
+    },
+    {
+      "id": "drama",
+      "name": "Drama",
+      "learningArea": "Arts",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "dance",
+      "name": "Dance",
+      "learningArea": "Arts",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "learningArea": "Arts",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "performance-music",
+      "name": "Performance Music",
+      "learningArea": "Arts",
+      "years": [10]
+    },
+    {
+      "id": "physical-education",
+      "name": "Physical Education",
+      "learningArea": "Health and Physical Education",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "health",
+      "name": "Health",
+      "learningArea": "Health and Physical Education",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "sports-studies",
+      "name": "Sports Studies",
+      "learningArea": "Health and Physical Education",
+      "years": [12, 13]
+    },
+    {
+      "id": "technology",
+      "name": "Technology",
+      "learningArea": "Technology",
+      "years": [9]
+    },
+    {
+      "id": "digital-technology",
+      "name": "Digital Technology",
+      "learningArea": "Technology",
+      "years": [9]
+    },
+    {
+      "id": "digital-and-creative-technologies",
+      "name": "Digital and Creative Technologies",
+      "learningArea": "Technology",
+      "years": [10, 11]
+    },
+    {
+      "id": "creative-and-innovative-technologies",
+      "name": "Creative and Innovative Technologies",
+      "learningArea": "Technology",
+      "years": [12, 13]
+    },
+    {
+      "id": "web-media-design",
+      "name": "Web Media Design",
+      "learningArea": "Technology",
+      "years": [12, 13]
+    },
+    {
+      "id": "fashion-and-textiles",
+      "name": "Fashion and Textiles",
+      "learningArea": "Technology",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "food-technology",
+      "name": "Food Technology",
+      "learningArea": "Technology",
+      "years": [9, 10, 11]
+    },
+    {
+      "id": "food-and-nutrition",
+      "name": "Food and Nutrition",
+      "learningArea": "Technology",
+      "years": [12, 13]
+    },
+    {
+      "id": "design-and-visual-communication",
+      "name": "Design and Visual Communication",
+      "learningArea": "Technology",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "product-design-and-technology",
+      "name": "Product Design and Technology",
+      "learningArea": "Technology",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "building-and-construction-technology",
+      "name": "Building and Construction Technology",
+      "learningArea": "Technology",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "hospitality",
+      "name": "Hospitality",
+      "learningArea": "Technology",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "automotive",
+      "name": "Automotive",
+      "learningArea": "Technology",
+      "years": [13]
+    },
+    {
+      "id": "professional-cookery",
+      "name": "Professional Cookery",
+      "learningArea": "Technology",
+      "years": [13]
+    },
+    {
+      "id": "social-studies",
+      "name": "Social Studies",
+      "learningArea": "Social Sciences",
+      "years": [9, 10]
+    },
+    {
+      "id": "economics",
+      "name": "Economics",
+      "learningArea": "Social Sciences",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "geography",
+      "name": "Geography",
+      "learningArea": "Social Sciences",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "history",
+      "name": "History",
+      "learningArea": "Social Sciences",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "business-studies",
+      "name": "Business Studies",
+      "learningArea": "Social Sciences",
+      "years": [10, 11, 12, 13]
+    },
+    {
+      "id": "classical-studies",
+      "name": "Classical Studies",
+      "learningArea": "Social Sciences",
+      "years": [12, 13]
+    },
+    {
+      "id": "tourism",
+      "name": "Tourism",
+      "learningArea": "Social Sciences",
+      "years": [12, 13]
+    },
+    {
+      "id": "psychology",
+      "name": "Psychology",
+      "learningArea": "Social Sciences",
+      "years": [12, 13]
+    },
+    {
+      "id": "te-reo-maori",
+      "name": "Te Reo Māori",
+      "learningArea": "Languages",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "introduction-to-te-reo-maori",
+      "name": "Introduction to Te Reo Māori",
+      "learningArea": "Languages",
+      "years": [11, 12, 13]
+    },
+    {
+      "id": "te-ao-haka",
+      "name": "Te Ao Haka",
+      "learningArea": "Languages",
+      "years": [12, 13]
+    },
+    {
+      "id": "chinese",
+      "name": "Chinese",
+      "learningArea": "Languages",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "french",
+      "name": "French",
+      "learningArea": "Languages",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "japanese",
+      "name": "Japanese",
+      "learningArea": "Languages",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "spanish",
+      "name": "Spanish",
+      "learningArea": "Languages",
+      "years": [9, 10, 11, 12, 13]
+    },
+    {
+      "id": "pathways",
+      "name": "Pathways",
+      "learningArea": "Pathways",
+      "years": [11, 12, 13]
+    }
+  ]
+}

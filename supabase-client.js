@@ -46,4 +46,4 @@ async function addTutorData() {
     console.log(data);
 }
 
-addTutorData();
+// addTutorData();
