@@ -122,7 +122,8 @@ const emailError = document.querySelector("#email-error");
 const languagesError = document.querySelector("#languages-error");
 const subjectsError = document.querySelector("#subjects-error");
 const availabilityError = document.querySelector("#availability-error");
-const tutorStorageKey = "tutor";
+const tutorsStorageKey = "tutors";
+const legacyTutorStorageKey = "tutor";
 
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
@@ -181,6 +182,39 @@ function setValidationState(control, messageElement, message = "") {
 //Check the basic shape of an email address
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+//Read the saved tutor array and preserve a tutor stored by the older version
+function getStoredTutors() {
+    const storedTutors = localStorage.getItem(tutorsStorageKey);
+
+    if (storedTutors) {
+        try {
+            const tutors = JSON.parse(storedTutors);
+
+            if (Array.isArray(tutors)) {
+                return tutors;
+            }
+        } catch {
+            //Start a fresh array if the stored value is not valid JSON
+        }
+    }
+
+    const legacyTutor = localStorage.getItem(legacyTutorStorageKey);
+
+    if (legacyTutor) {
+        try {
+            const tutor = JSON.parse(legacyTutor);
+
+            if (tutor && typeof tutor === "object" && !Array.isArray(tutor)) {
+                return [tutor];
+            }
+        } catch {
+            //Ignore an invalid value from the older storage format
+        }
+    }
+
+    return [];
 }
 
 //Clear text-field errors while the user corrects them
@@ -865,7 +899,10 @@ signupForm.addEventListener("submit", event => {
         subjects,
         availability: selectedAvailability
     };
+    const tutors = getStoredTutors();
 
-    localStorage.setItem(tutorStorageKey, JSON.stringify(tutor));
+    tutors.push(tutor);
+    localStorage.setItem(tutorsStorageKey, JSON.stringify(tutors));
+    localStorage.removeItem(legacyTutorStorageKey);
     console.log("Tutor created:", tutor);
 });
