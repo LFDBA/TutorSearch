@@ -6,6 +6,7 @@
     --text-colour: #4a403a;
     --muted-text: #776d65;
     --border-colour: #d9d0c6;
+    --error-colour: #98483f;
     --terracotta: #d3a07f;
     --sage: #aebda5;
     --teal: #9fb8b4;
@@ -101,6 +102,34 @@ body {
 .form-field > input:focus {
     border-color: var(--terracotta);
     box-shadow: 0 0 0 0.2rem rgb(211 160 127 / 20%);
+}
+
+/*Display clear inline form validation errors*/
+.validation-message {
+    margin: 0.15rem 0 0;
+    color: var(--error-colour);
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.35;
+}
+
+.validation-message[hidden] {
+    display: none;
+}
+
+.form-field.has-error > input,
+.form-field.has-error .choices__inner {
+    border-color: var(--error-colour);
+    box-shadow: 0 0 0 0.2rem rgb(152 72 63 / 14%);
+}
+
+.signup-selector.has-error {
+    outline: 2px solid var(--error-colour);
+    outline-offset: 2px;
+}
+
+.signup-selector .validation-message {
+    margin-top: 0.45rem;
 }
 
 /*Match the visible language dropdown to the text fields*/

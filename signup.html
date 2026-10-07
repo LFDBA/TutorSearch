@@ -141,8 +141,10 @@
                         autocomplete="name"
                         maxlength="100"
                         placeholder="Your name"
+                        aria-describedby="name-error"
                         required
                     >
+                    <span id="name-error" class="validation-message" hidden></span>
                 </label>
 
                 <!--Tutor email input-->
@@ -154,14 +156,23 @@
                         type="email"
                         autocomplete="email"
                         placeholder="you@example.com"
+                        aria-describedby="email-error"
                         required
                     >
+                    <span id="email-error" class="validation-message" hidden></span>
                 </label>
 
                 <!--Tutor language input-->
                 <label class="form-field" for="languages">
                     <span>Languages</span>
-                    <select id="languages" name="language" multiple required></select>
+                    <select
+                        id="languages"
+                        name="language"
+                        multiple
+                        required
+                        aria-describedby="languages-error"
+                    ></select>
+                    <span id="languages-error" class="validation-message" hidden></span>
                 </label>
 
                 <!--Open the subject popup and show its result-->
@@ -169,8 +180,13 @@
                     <div>
                         <h2>Subjects</h2>
                         <p id="subject-summary" aria-live="polite">No subjects selected.</p>
+                        <p id="subjects-error" class="validation-message" hidden></p>
                     </div>
-                    <button id="open-subjects" type="button">Choose subjects</button>
+                    <button
+                        id="open-subjects"
+                        type="button"
+                        aria-describedby="subject-summary subjects-error"
+                    >Choose subjects</button>
                 </div>
 
                 <!--Open the availability popup and store its result-->
@@ -178,8 +194,13 @@
                     <div>
                         <h2>Availability</h2>
                         <p id="availability-summary" aria-live="polite">No availability selected.</p>
+                        <p id="availability-error" class="validation-message" hidden></p>
                     </div>
-                    <button id="open-availability" type="button">Choose availability</button>
+                    <button
+                        id="open-availability"
+                        type="button"
+                        aria-describedby="availability-summary availability-error"
+                    >Choose availability</button>
                     <input id="availability-data" name="availability" type="hidden" value="[]">
                 </div>
 

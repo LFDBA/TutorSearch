@@ -117,6 +117,11 @@ const languageSelect = document.querySelector("#languages");
 const signupForm = document.querySelector("#signup-form");
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
+const nameError = document.querySelector("#name-error");
+const emailError = document.querySelector("#email-error");
+const languagesError = document.querySelector("#languages-error");
+const subjectsError = document.querySelector("#subjects-error");
+const availabilityError = document.querySelector("#availability-error");
 
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
@@ -142,8 +147,10 @@ for (const language of languageOptions) {
 }
 
 //Make the language select searchable and multi-choice
+let languageChoices;
+
 if (typeof Choices !== "undefined") {
-    new Choices(languageSelect, {
+    languageChoices = new Choices(languageSelect, {
         removeItemButton: true,
         searchEnabled: true,
         searchPlaceholderValue: "Search languages",
@@ -152,6 +159,37 @@ if (typeof Choices !== "undefined") {
         shouldSort: false
     });
 }
+
+//Show or clear an inline validation message for a form control
+function setValidationState(control, messageElement, message = "") {
+    const field = control.closest(".form-field, .signup-selector");
+    const hasError = message.length > 0;
+
+    field?.classList.toggle("has-error", hasError);
+
+    if (hasError) {
+        control.setAttribute("aria-invalid", "true");
+    } else {
+        control.removeAttribute("aria-invalid");
+    }
+
+    messageElement.textContent = message;
+    messageElement.hidden = !hasError;
+}
+
+//Check the basic shape of an email address
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+//Clear text-field errors while the user corrects them
+nameInput.addEventListener("input", () => setValidationState(nameInput, nameError));
+emailInput.addEventListener("input", () => setValidationState(emailInput, emailError));
+languageSelect.addEventListener("change", () => {
+    if (languageSelect.selectedOptions.length > 0) {
+        setValidationState(languageSelect, languagesError);
+    }
+});
 
 //Fetch subject data
 const data = await fetch("./subjects.json").then(response => response.json());
@@ -224,6 +262,10 @@ function updateSubjectSummary() {
     subjectSummary.textContent = selectedSubjects.length
         ? `${selectedSubjects.length} selected: ${selectedSubjects.join(", ")}`
         : "No subjects selected.";
+
+    if (selectedSubjects.length > 0) {
+        setValidationState(openSubjectsButton, subjectsError);
+    }
 }
 
 //Build year-specific subject options using the selected year groups
@@ -456,6 +498,10 @@ function syncAvailabilityOutput() {
             `${getDayLabel(timeframe.day)} ${timeframe.start}–${timeframe.end}`
         ).join(", ")}`
         : "No availability selected.";
+
+    if (timeframes.length > 0) {
+        setValidationState(openAvailabilityButton, availabilityError);
+    }
 }
 
 //Position and label a timeframe element on the timeline
@@ -735,16 +781,88 @@ availabilityDialog.addEventListener("close", () => {
 //Set the initial hidden value and summary
 syncAvailabilityOutput();
 
-//Create and log a tutor object without validating or uploading it
+//Validate the signup form, then create and log a tutor object without uploading it
 signupForm.addEventListener("submit", event => {
     event.preventDefault();
 
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const languages = [...languageSelect.selectedOptions].map(option => option.value);
+    const subjects = getSelectedCourses();
+    const selectedAvailability = getFlatAvailability();
+    const validationChecks = [
+        {
+            invalid: name.length === 0,
+            control: nameInput,
+            error: nameError,
+            message: "Enter your name.",
+            focus: () => nameInput.focus()
+        },
+        {
+            invalid: email.length === 0 || !isValidEmail(email),
+            control: emailInput,
+            error: emailError,
+            message: email.length === 0
+                ? "Enter your email address."
+                : "Enter a valid email address.",
+            focus: () => emailInput.focus()
+        },
+        {
+            invalid: languages.length === 0,
+            control: languageSelect,
+            error: languagesError,
+            message: "Select at least one language.",
+            focus: () => {
+                const searchInput = languageSelect
+                    .closest(".form-field")
+                    .querySelector(".choices__input");
+
+                if (searchInput) {
+                    searchInput.focus();
+                    languageChoices?.showDropdown();
+                } else {
+                    languageSelect.focus();
+                }
+            }
+        },
+        {
+            invalid: subjects.length === 0,
+            control: openSubjectsButton,
+            error: subjectsError,
+            message: "Select at least one subject.",
+            focus: () => openSubjectsButton.focus()
+        },
+        {
+            invalid: selectedAvailability.length === 0,
+            control: openAvailabilityButton,
+            error: availabilityError,
+            message: "Add at least one availability slot.",
+            focus: () => openAvailabilityButton.focus()
+        }
+    ];
+
+    //Show every error so the user can see all required corrections
+    for (const check of validationChecks) {
+        setValidationState(
+            check.control,
+            check.error,
+            check.invalid ? check.message : ""
+        );
+    }
+
+    const firstInvalidCheck = validationChecks.find(check => check.invalid);
+
+    if (firstInvalidCheck) {
+        firstInvalidCheck.focus();
+        return;
+    }
+
     const tutor = {
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim(),
-        languages: [...languageSelect.selectedOptions].map(option => option.value),
-        subjects: getSelectedCourses(),
-        availability: getFlatAvailability()
+        name,
+        email,
+        languages,
+        subjects,
+        availability: selectedAvailability
     };
 
     console.log("Tutor created:", tutor);
