@@ -15,6 +15,63 @@
         <script src="supabase-client.js"></script>
         <script src="signup.js" type="module"></script>
 
+        <style>
+            #availability-dialog {
+                width: min(48rem, calc(100% - 2rem));
+            }
+
+            .availability-scale {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .availability-track {
+                position: relative;
+                height: 4rem;
+                border: 1px solid;
+                touch-action: none;
+                user-select: none;
+            }
+
+            .availability-timeframe {
+                position: absolute;
+                top: 0.5rem;
+                bottom: 0.5rem;
+                box-sizing: border-box;
+                overflow: hidden;
+                border: 1px solid;
+                background: lightgray;
+                cursor: grab;
+            }
+
+            .availability-timeframe.is-selected {
+                outline: 2px solid;
+            }
+
+            .availability-timeframe-label {
+                padding: 0 0.75rem;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                pointer-events: none;
+            }
+
+            .availability-resize-handle {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 0.5rem;
+                background: gray;
+                cursor: ew-resize;
+            }
+
+            .availability-resize-handle[data-edge="start"] {
+                left: 0;
+            }
+
+            .availability-resize-handle[data-edge="end"] {
+                right: 0;
+            }
+        </style>
     </head>
     <body>
         <main>
@@ -55,9 +112,47 @@
             </dialog>
 
             <dialog id="availability-dialog" aria-labelledby="availability-dialog-title">
-                <form method="dialog">
+                <form id="availability-form" method="dialog">
                     <h2 id="availability-dialog-title">Select availability</h2>
-                    <button value="close">Close</button>
+
+                    <fieldset>
+                        <legend>Day</legend>
+                        <button type="button" data-availability-day="monday">Monday</button>
+                        <button type="button" data-availability-day="tuesday">Tuesday</button>
+                        <button type="button" data-availability-day="wednesday">Wednesday</button>
+                        <button type="button" data-availability-day="thursday">Thursday</button>
+                        <button type="button" data-availability-day="friday">Friday</button>
+                        <button type="button" data-availability-day="saturday">Saturday</button>
+                        <button type="button" data-availability-day="sunday">Sunday</button>
+                    </fieldset>
+
+                    <section id="availability-editor" hidden>
+                        <h3 id="availability-day-heading"></h3>
+                        <div class="availability-scale" aria-hidden="true">
+                            <span>00:00</span>
+                            <span>06:00</span>
+                            <span>12:00</span>
+                            <span>18:00</span>
+                            <span>24:00</span>
+                        </div>
+                        <div
+                            id="availability-track"
+                            class="availability-track"
+                            aria-describedby="availability-help"
+                        ></div>
+                        <p id="availability-help" aria-live="polite">
+                            Click the timeline to add a one-hour timeframe.
+                        </p>
+                        <ul id="availability-list"></ul>
+                        <button id="remove-timeframe" type="button" disabled>
+                            Remove selected timeframe
+                        </button>
+                    </section>
+
+                    <div>
+                        <button value="cancel">Cancel</button>
+                        <button value="confirm">Done</button>
+                    </div>
                 </form>
             </dialog>
 
@@ -74,6 +169,18 @@
             </label>
             <br>
 
+            <label for="email">
+                Email
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                >
+            </label>
+            <br>
+
             <label for="languages">
                 Languages
                 <select id="languages" name="language" multiple required></select>
@@ -82,6 +189,8 @@
             <button id="open-subjects" type="button">Choose subjects</button>
             <p id="subject-summary" aria-live="polite">No subjects selected.</p>
             <button id="open-availability" type="button">Choose availability</button>
+            <p id="availability-summary" aria-live="polite">No availability selected.</p>
+            <input id="availability-data" name="availability" type="hidden" value="[]">
         </main>
     </body>
 </html>
