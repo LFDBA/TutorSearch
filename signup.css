@@ -365,9 +365,102 @@ body {
     outline-offset: 2px;
 }
 
-/*Set the availability popup width*/
+/*Style the first availability popup*/
 #availability-dialog {
+    box-sizing: border-box;
     width: min(48rem, calc(100% - 2rem));
+    max-height: calc(100vh - 2rem);
+    padding: 0;
+    overflow: auto;
+    border: 1px solid var(--border-colour);
+    border-radius: 1.25rem;
+    background: var(--card-background);
+    box-shadow: 0 1rem 3rem rgb(74 64 58 / 22%);
+    color: var(--text-colour);
+}
+
+#availability-dialog::backdrop {
+    background: rgb(74 64 58 / 28%);
+}
+
+#availability-dialog form {
+    box-sizing: border-box;
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+#availability-dialog h2 {
+    margin: 0;
+    font-family: "Indie Flower", cursive;
+    font-size: 1.75rem;
+    font-weight: 400;
+}
+
+/*Style the day selection area*/
+#availability-dialog fieldset {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: rgb(174 189 165 / 18%);
+    font-family: "Indie Flower", cursive;
+}
+
+#availability-dialog legend {
+    padding: 0 0.4rem;
+}
+
+#availability-dialog [data-availability-day] {
+    margin: 0.2rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 999px;
+    background: var(--field-background);
+    color: var(--text-colour);
+    cursor: pointer;
+    font: inherit;
+}
+
+#availability-dialog [data-availability-day][aria-pressed="true"] {
+    border-color: var(--sage);
+    background: var(--sage);
+}
+
+#availability-dialog [data-availability-day]:hover {
+    transform: translateY(-1px);
+}
+
+/*Style the first availability popup controls*/
+#availability-dialog .dialog-actions {
+    display: flex;
+    gap: 0.65rem;
+    justify-content: flex-end;
+}
+
+#availability-dialog .dialog-actions button {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 999px;
+    background: var(--field-background);
+    color: var(--text-colour);
+    cursor: pointer;
+    font-family: "Indie Flower", cursive;
+}
+
+#availability-dialog .dialog-actions button[value="confirm"] {
+    border-color: var(--sage);
+    background: var(--sage);
+}
+
+#availability-dialog .dialog-actions button:hover {
+    transform: translateY(-1px);
+}
+
+#availability-dialog [data-availability-day]:focus-visible,
+#availability-dialog .dialog-actions button:focus-visible {
+    outline: 2px solid var(--text-colour);
+    outline-offset: 2px;
 }
 
 /*Space the time labels across the timeline*/
