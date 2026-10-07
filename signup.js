@@ -335,7 +335,7 @@ subjectsForm.addEventListener("submit", event => {
         }
     }
 });
-
+ 
 //Restore the previous selection when the popup is cancelled
 dialog.addEventListener("close", () => {
     if (dialog.returnValue !== "confirm" && dialogSnapshot) {
