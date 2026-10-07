@@ -386,7 +386,7 @@ body {
 #availability-dialog form {
     box-sizing: border-box;
     display: grid;
-    gap: 1.25rem;
+    gap: 1.1rem;
     padding: clamp(1.25rem, 5vw, 2rem);
 }
 
@@ -417,6 +417,7 @@ body {
     border: 1px solid var(--border-colour);
     border-radius: 999px;
     background: var(--field-background);
+    box-shadow: 0 0.15rem 0.35rem rgb(74 64 58 / 7%);
     color: var(--text-colour);
     cursor: pointer;
     font: inherit;
@@ -425,6 +426,7 @@ body {
 #availability-dialog [data-availability-day][aria-pressed="true"] {
     border-color: var(--sage);
     background: var(--sage);
+    box-shadow: 0 0.2rem 0.45rem rgb(74 64 58 / 12%);
 }
 
 #availability-dialog [data-availability-day]:hover {
@@ -436,6 +438,7 @@ body {
     display: flex;
     gap: 0.65rem;
     justify-content: flex-end;
+    padding-top: 0.2rem;
 }
 
 #availability-dialog .dialog-actions button {
@@ -458,15 +461,42 @@ body {
 }
 
 #availability-dialog [data-availability-day]:focus-visible,
+#availability-dialog #remove-timeframe:focus-visible,
 #availability-dialog .dialog-actions button:focus-visible {
     outline: 2px solid var(--text-colour);
     outline-offset: 2px;
+}
+
+/*Create a panel for the selected day's timeline*/
+#availability-editor {
+    display: grid;
+    gap: 0.7rem;
+    padding: 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: rgb(159 184 180 / 14%);
+}
+
+#availability-editor[hidden] {
+    display: none;
+}
+
+/*Style the selected day heading*/
+#availability-day-heading {
+    margin: 0;
+    font-family: "Indie Flower", cursive;
+    font-size: 1.35rem;
+    font-weight: 400;
 }
 
 /*Space the time labels across the timeline*/
 .availability-scale {
     display: flex;
     justify-content: space-between;
+    padding: 0 0.2rem;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
 }
 
 /*Create the clickable 24-hour timeline*/
@@ -499,7 +529,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
     border: 1px solid rgb(74 64 58 / 18%);
     border-radius: 0.7rem;
     background: var(--terracotta);
@@ -510,6 +540,7 @@ body {
 
 /*Show which timeframe is selected*/
 .availability-timeframe.is-selected {
+    z-index: 2;
     outline: 2px solid var(--text-colour);
     outline-offset: 2px;
 }
@@ -520,7 +551,14 @@ body {
 
 /*Keep the timeframe text inside its block*/
 .availability-timeframe-label {
-    padding: 0 0.6rem;
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    padding: 0.25rem 0.45rem;
+    border: 1px solid rgb(211 160 127 / 65%);
+    border-radius: 0.45rem;
+    background: var(--field-background);
+    box-shadow: 0 0.2rem 0.5rem rgb(74 64 58 / 16%);
     color: #302824;
     font-family: system-ui, sans-serif;
     font-size: 0.72rem;
@@ -528,9 +566,18 @@ body {
     letter-spacing: 0.01em;
     line-height: 1;
     text-align: center;
-    text-shadow: 0 1px 0 rgb(255 255 255 / 35%);
+    transform: translateX(-50%);
+    visibility: hidden;
     white-space: nowrap;
+    opacity: 0;
     pointer-events: none;
+}
+
+.availability-timeframe:hover .availability-timeframe-label,
+.availability-timeframe:focus-visible .availability-timeframe-label,
+.availability-timeframe.is-selected .availability-timeframe-label {
+    visibility: visible;
+    opacity: 1;
 }
 
 /*Create draggable resize handles*/
@@ -547,10 +594,93 @@ body {
 .availability-resize-handle[data-edge="start"] {
     left: 0;
     border-right: 1px solid rgb(74 64 58 / 14%);
+    border-radius: 0.65rem 0 0 0.65rem;
 }
 
 /*Place the end handle on the right*/
 .availability-resize-handle[data-edge="end"] {
     right: 0;
     border-left: 1px solid rgb(74 64 58 / 14%);
+    border-radius: 0 0.65rem 0.65rem 0;
+}
+
+/*Style the timeline instructions*/
+#availability-help {
+    margin: 0;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+/*Display exact selected times as small tags*/
+#availability-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#availability-list:empty {
+    display: none;
+}
+
+#availability-list li {
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgb(211 160 127 / 48%);
+    border-radius: 999px;
+    background: rgb(211 160 127 / 18%);
+    color: var(--text-colour);
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/*Style the button for deleting the selected timeframe*/
+#remove-timeframe {
+    justify-self: start;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid rgb(211 160 127 / 70%);
+    border-radius: 999px;
+    background: var(--field-background);
+    color: var(--text-colour);
+    cursor: pointer;
+    font-family: "Indie Flower", cursive;
+}
+
+#remove-timeframe:hover:not(:disabled) {
+    border-color: var(--terracotta);
+    background: rgb(211 160 127 / 18%);
+}
+
+#remove-timeframe:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+/*Keep the availability popup comfortable on small screens*/
+@media (max-width: 34rem) {
+    #availability-dialog {
+        width: calc(100% - 1rem);
+        max-height: calc(100vh - 1rem);
+    }
+
+    #availability-dialog form {
+        padding: 1rem;
+    }
+
+    #availability-dialog fieldset,
+    #availability-editor {
+        padding: 0.75rem;
+    }
+
+    #availability-dialog .dialog-actions button {
+        flex: 1;
+    }
+
+    .availability-scale {
+        font-size: 0.62rem;
+    }
 }
