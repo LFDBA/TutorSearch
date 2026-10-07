@@ -113,6 +113,11 @@ const languageLabelOverrides = {
 const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
 const languageSelect = document.querySelector("#languages");
 
+//Main signup form elements
+const signupForm = document.querySelector("#signup-form");
+const nameInput = document.querySelector("#name");
+const emailInput = document.querySelector("#email");
+
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
     .map(code => {
@@ -196,6 +201,19 @@ function getSelectedYears() {
 //Get the selected subject and year values
 function getSelectedSubjectValues() {
     return [...subjectSelect.selectedOptions].map(option => option.value);
+}
+
+//Convert the selected course options into subject and year objects
+function getSelectedCourses() {
+    return [...subjectSelect.selectedOptions].map(option => {
+        const valueParts = option.value.match(/^(.*)--year-(\d+)$/);
+
+        return {
+            subjectId: valueParts?.[1] ?? option.value,
+            subjectName: option.textContent.replace(/\s+\(yr \d+\)$/, ""),
+            year: valueParts ? Number(valueParts[2]) : undefined
+        };
+    });
 }
 
 //Show the current subject selection below the button
@@ -716,3 +734,18 @@ availabilityDialog.addEventListener("close", () => {
 
 //Set the initial hidden value and summary
 syncAvailabilityOutput();
+
+//Create and log a tutor object without validating or uploading it
+signupForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const tutor = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        languages: [...languageSelect.selectedOptions].map(option => option.value),
+        subjects: getSelectedCourses(),
+        availability: getFlatAvailability()
+    };
+
+    console.log("Tutor created:", tutor);
+});

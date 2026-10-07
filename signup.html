@@ -130,7 +130,7 @@
             </dialog>
 
             <!--Tutor details card-->
-            <section class="signup-card" aria-label="Tutor details">
+            <form id="signup-form" class="signup-card" aria-label="Tutor details" novalidate>
                 <!--Tutor name input-->
                 <label class="form-field" for="name">
                     <span>Full name</span>
@@ -182,7 +182,10 @@
                     <button id="open-availability" type="button">Choose availability</button>
                     <input id="availability-data" name="availability" type="hidden" value="[]">
                 </div>
-            </section>
+
+                <!--Create a tutor object without uploading it-->
+                <button class="signup-submit" type="submit">Create tutor</button>
+            </form>
         </main>
     </body>
 </html>
