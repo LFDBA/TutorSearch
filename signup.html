@@ -5,26 +5,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tutor Add</title>
 
+        <!--Searchable dropdown styles and script-->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/styles/choices.min.css"
         >
         <script src="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/scripts/choices.min.js"></script>
 
+        <!--Database and signup scripts-->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="supabase-client.js"></script>
         <script src="signup.js" type="module"></script>
 
+        <!--Minimum styles needed for the availability timeline-->
         <style>
+            /*Set the availability popup width*/
             #availability-dialog {
                 width: min(48rem, calc(100% - 2rem));
             }
 
+            /*Space the time labels across the timeline*/
             .availability-scale {
                 display: flex;
                 justify-content: space-between;
             }
 
+            /*Create the clickable 24-hour timeline*/
             .availability-track {
                 position: relative;
                 height: 4rem;
@@ -33,6 +39,7 @@
                 user-select: none;
             }
 
+            /*Display each availability timeframe on the timeline*/
             .availability-timeframe {
                 position: absolute;
                 top: 0.5rem;
@@ -44,10 +51,12 @@
                 cursor: grab;
             }
 
+            /*Show which timeframe is selected*/
             .availability-timeframe.is-selected {
                 outline: 2px solid;
             }
 
+            /*Keep the timeframe text inside its block*/
             .availability-timeframe-label {
                 padding: 0 0.75rem;
                 font-size: 0.75rem;
@@ -55,6 +64,7 @@
                 pointer-events: none;
             }
 
+            /*Create draggable resize handles*/
             .availability-resize-handle {
                 position: absolute;
                 top: 0;
@@ -64,10 +74,12 @@
                 cursor: ew-resize;
             }
 
+            /*Place the start handle on the left*/
             .availability-resize-handle[data-edge="start"] {
                 left: 0;
             }
 
+            /*Place the end handle on the right*/
             .availability-resize-handle[data-edge="end"] {
                 right: 0;
             }
@@ -75,10 +87,12 @@
     </head>
     <body>
         <main>
+            <!--Subject selection popup-->
             <dialog id="subjects-dialog" aria-labelledby="subjects-dialog-title">
                 <form id="subjects-form" method="dialog" novalidate>
                     <h2 id="subjects-dialog-title">Select subjects</h2>
 
+                    <!--Year group multi-selection-->
                     <fieldset>
                         <legend>Year groups</legend>
                         <div class="year-options">
@@ -90,6 +104,7 @@
                         </div>
                     </fieldset>
 
+                    <!--Searchable subject multi-selection-->
                     <div>
                         <label for="subjects">Subjects</label>
                         <p id="subject-help">Select at least one year group first.</p>
@@ -104,6 +119,7 @@
                         ></select>
                     </div>
 
+                    <!--Subject popup controls-->
                     <div class="dialog-actions">
                         <button value="cancel">Cancel</button>
                         <button id="save-subjects" value="confirm">Done</button>
@@ -111,10 +127,12 @@
                 </form>
             </dialog>
 
+            <!--Availability selection popup-->
             <dialog id="availability-dialog" aria-labelledby="availability-dialog-title">
                 <form id="availability-form" method="dialog">
                     <h2 id="availability-dialog-title">Select availability</h2>
 
+                    <!--Day selection buttons-->
                     <fieldset>
                         <legend>Day</legend>
                         <button type="button" data-availability-day="monday">Monday</button>
@@ -126,8 +144,10 @@
                         <button type="button" data-availability-day="sunday">Sunday</button>
                     </fieldset>
 
+                    <!--Interactive availability timeline-->
                     <section id="availability-editor" hidden>
                         <h3 id="availability-day-heading"></h3>
+                        <!--Timeline labels-->
                         <div class="availability-scale" aria-hidden="true">
                             <span>00:00</span>
                             <span>06:00</span>
@@ -135,11 +155,13 @@
                             <span>18:00</span>
                             <span>24:00</span>
                         </div>
+                        <!--Timeframes are added to this rectangle with JavaScript-->
                         <div
                             id="availability-track"
                             class="availability-track"
                             aria-describedby="availability-help"
                         ></div>
+                        <!--Timeline instructions and exact selected times-->
                         <p id="availability-help" aria-live="polite">
                             Click the timeline to add a one-hour timeframe.
                         </p>
@@ -149,6 +171,7 @@
                         </button>
                     </section>
 
+                    <!--Availability popup controls-->
                     <div>
                         <button value="cancel">Cancel</button>
                         <button value="confirm">Done</button>
@@ -156,6 +179,7 @@
                 </form>
             </dialog>
 
+            <!--Tutor name input-->
             <label for="name">
                 Full name
                 <input
@@ -169,6 +193,7 @@
             </label>
             <br>
 
+            <!--Tutor email input-->
             <label for="email">
                 Email
                 <input
@@ -181,13 +206,16 @@
             </label>
             <br>
 
+            <!--Tutor language input-->
             <label for="languages">
                 Languages
                 <select id="languages" name="language" multiple required></select>
             </label>
             <br>
+            <!--Open the subject popup and show its result-->
             <button id="open-subjects" type="button">Choose subjects</button>
             <p id="subject-summary" aria-live="polite">No subjects selected.</p>
+            <!--Open the availability popup and store its result-->
             <button id="open-availability" type="button">Choose availability</button>
             <p id="availability-summary" aria-live="polite">No availability selected.</p>
             <input id="availability-data" name="availability" type="hidden" value="[]">
