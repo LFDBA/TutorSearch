@@ -122,6 +122,7 @@ const emailError = document.querySelector("#email-error");
 const languagesError = document.querySelector("#languages-error");
 const subjectsError = document.querySelector("#subjects-error");
 const availabilityError = document.querySelector("#availability-error");
+const tutorStorageKey = "tutor";
 
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
@@ -781,7 +782,7 @@ availabilityDialog.addEventListener("close", () => {
 //Set the initial hidden value and summary
 syncAvailabilityOutput();
 
-//Validate the signup form, then create and log a tutor object without uploading it
+//Validate the signup form, then store and log the tutor without uploading it
 signupForm.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -865,5 +866,6 @@ signupForm.addEventListener("submit", event => {
         availability: selectedAvailability
     };
 
+    localStorage.setItem(tutorStorageKey, JSON.stringify(tutor));
     console.log("Tutor created:", tutor);
 });
