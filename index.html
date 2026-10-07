@@ -4,13 +4,88 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tutor Search</title>
+
+        <!--Search page font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap"
+        >
+
+        <!--Searchable subject dropdown styles-->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/styles/choices.min.css"
+        >
+
+        <!--Search page styles-->
+        <link rel="stylesheet" href="index.css">
+
+        <!--Search page scripts-->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/scripts/choices.min.js"></script>
         <script src="supabase-client.js"></script>
         <script src="main.js"></script>
-        <script src="search.js"></script>
-
+        <script src="search.js" defer></script>
     </head>
     <body>
-        
+        <main class="search-page">
+            <!--Search page heading-->
+            <header class="search-header">
+                <p class="search-brand">Tutor Search</p>
+                <h1>Find your tutor</h1>
+                <p class="search-intro">Start with the subjects you would like help with.</p>
+            </header>
+
+            <!--Subject selection popup-->
+            <dialog id="subjects-dialog" aria-labelledby="subjects-dialog-title">
+                <form id="subjects-form" method="dialog" novalidate>
+                    <h2 id="subjects-dialog-title">Select subjects</h2>
+
+                    <!--Year group multi-selection-->
+                    <fieldset>
+                        <legend>Year groups</legend>
+                        <div class="year-options">
+                            <label><input name="year" type="checkbox" value="9"> Year 9</label>
+                            <label><input name="year" type="checkbox" value="10"> Year 10</label>
+                            <label><input name="year" type="checkbox" value="11"> Year 11</label>
+                            <label><input name="year" type="checkbox" value="12"> Year 12</label>
+                            <label><input name="year" type="checkbox" value="13"> Year 13</label>
+                        </div>
+                    </fieldset>
+
+                    <!--Searchable subject multi-selection-->
+                    <div>
+                        <label for="subjects">Subjects</label>
+                        <p id="subject-help">Select at least one year group first.</p>
+                        <select
+                            id="subjects"
+                            name="subject"
+                            multiple
+                            required
+                            disabled
+                            data-placeholder="Search and select subjects"
+                            aria-describedby="subject-help"
+                        ></select>
+                    </div>
+
+                    <!--Subject popup controls-->
+                    <div class="dialog-actions">
+                        <button value="cancel">Cancel</button>
+                        <button id="save-subjects" value="confirm">Done</button>
+                    </div>
+                </form>
+            </dialog>
+
+            <!--Open the subject popup and show its result-->
+            <section class="signup-selector signup-selector--terracotta" aria-labelledby="subject-selector-title">
+                <div>
+                    <h2 id="subject-selector-title">Subjects</h2>
+                    <p id="subject-summary" aria-live="polite">No subjects selected.</p>
+                </div>
+                <button id="open-subjects" type="button">Choose subjects</button>
+            </section>
+        </main>
     </body>
 </html>
