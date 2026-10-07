@@ -32,14 +32,78 @@ const languageCodes = [
 ];
 
 const languageLabelOverrides = {
+    aa: "Afar",
+    ab: "Abkhazian",
+    ae: "Avestan",
+    ase: "American Sign Language",
     asf: "Australian Sign Language (Auslan)",
+    av: "Avaric",
+    ba: "Bashkir",
     bfi: "British Sign Language",
+    bi: "Bislama",
+    bik: "Bikol",
+    bo: "Tibetan",
+    ce: "Chechen",
+    ch: "Chamorro",
     cmn: "Mandarin Chinese",
+    cr: "Cree",
+    cu: "Church Slavonic",
+    cv: "Chuvash",
+    dz: "Dzongkha",
+    ff: "Fulah",
     fil: "Filipino",
+    fj: "Fijian",
+    gv: "Manx",
+    hak: "Hakka Chinese",
     hif: "Fiji Hindi",
+    hil: "Hiligaynon",
+    ho: "Hiri Motu",
+    hz: "Herero",
+    ie: "Interlingue",
+    ii: "Sichuan Yi",
+    ik: "Inupiaq",
+    io: "Ido",
+    kg: "Kongo",
+    ki: "Kikuyu",
+    kj: "Kuanyama",
+    kl: "Greenlandic",
+    kr: "Kanuri",
+    ks: "Kashmiri",
+    kv: "Komi",
+    kw: "Cornish",
+    li: "Limburgish",
+    lu: "Luba-Katanga",
+    mh: "Marshallese",
+    na: "Nauru",
+    nan: "Min Nan Chinese",
+    nd: "North Ndebele",
+    ng: "Ndonga",
+    niu: "Niuean",
+    nr: "South Ndebele",
+    nv: "Navajo",
     nzs: "New Zealand Sign Language",
+    oj: "Ojibwe",
+    os: "Ossetian",
+    pag: "Pangasinan",
+    pam: "Kapampangan",
+    pi: "Pali",
+    rar: "Cook Islands Māori",
+    rn: "Kirundi",
+    sc: "Sardinian",
+    se: "Northern Sámi",
+    sg: "Sango",
+    ss: "Swati",
+    tkl: "Tokelauan",
     tl: "Tagalog",
+    tpi: "Tok Pisin",
+    tw: "Twi",
+    ty: "Tahitian",
     tvl: "Tuvaluan",
+    ve: "Venda",
+    vo: "Volapük",
+    war: "Waray",
+    wuu: "Wu Chinese",
+    za: "Zhuang",
     zh: "Chinese (general)"
 };
 
@@ -47,13 +111,17 @@ const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
 const languageSelect = document.querySelector("#languages");
 
 const languageOptions = languageCodes
-    .map(code => ({
-        value: code,
-        label: languageLabelOverrides[code] ?? languageNames.of(code)
-    }))
+    .map(code => {
+        const name = languageLabelOverrides[code] ?? languageNames.of(code);
+
+        return {
+            value: name,
+            label: name
+        };
+    })
     .sort((a, b) => a.label.localeCompare(b.label, "en"));
 
-languageOptions.push({ value: "other", label: "Other" });
+languageOptions.push({ value: "Other", label: "Other" });
 
 for (const language of languageOptions) {
     const option = document.createElement("option");
