@@ -4,16 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tutor Search</title>
-
-        <script type="module">
-            const data = await fetch("./subjects.json").then(response => response.json());
-
-            const year12Subjects = data.subjects.filter(subject =>
-                subject.years.includes(12)
-            );
-
-            console.log(year12Subjects);
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="supabase-client.js"></script>
         <script src="main.js"></script>

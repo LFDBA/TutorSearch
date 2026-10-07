@@ -1,3 +1,1 @@
-function search(searchCriteria) {
-    
-}
+console.log(JSON.parse(localStorage.getItem("tutor")));
