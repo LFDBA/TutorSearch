@@ -506,7 +506,6 @@ body {
     box-shadow: 0 0.2rem 0.45rem rgb(74 64 58 / 16%);
     color: var(--text-colour);
     cursor: grab;
-    font-family: "Indie Flower", cursive;
 }
 
 /*Show which timeframe is selected*/
@@ -521,10 +520,15 @@ body {
 
 /*Keep the timeframe text inside its block*/
 .availability-timeframe-label {
-    padding: 0 0.75rem;
-    font-size: 0.75rem;
+    padding: 0 0.6rem;
+    color: #302824;
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
     line-height: 1;
     text-align: center;
+    text-shadow: 0 1px 0 rgb(255 255 255 / 35%);
     white-space: nowrap;
     pointer-events: none;
 }
