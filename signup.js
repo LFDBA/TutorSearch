@@ -296,3 +296,10 @@ dialog.addEventListener("close", () => {
 
     dialogSnapshot = undefined;
 });
+
+const availabilityDialog = document.querySelector("#availability-dialog");
+const openAvailabilityButton = document.querySelector("#open-availability");
+
+openAvailabilityButton.addEventListener("click", () => {
+    availabilityDialog.showModal();
+});

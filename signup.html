@@ -54,6 +54,13 @@
                 </form>
             </dialog>
 
+            <dialog id="availability-dialog" aria-labelledby="availability-dialog-title">
+                <form method="dialog">
+                    <h2 id="availability-dialog-title">Select availability</h2>
+                    <button value="close">Close</button>
+                </form>
+            </dialog>
+
             <label for="name">
                 Full name
                 <input
@@ -74,6 +81,7 @@
             <br>
             <button id="open-subjects" type="button">Choose subjects</button>
             <p id="subject-summary" aria-live="polite">No subjects selected.</p>
+            <button id="open-availability" type="button">Choose availability</button>
         </main>
     </body>
 </html>
