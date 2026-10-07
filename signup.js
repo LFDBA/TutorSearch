@@ -193,8 +193,8 @@ function getSelectedYears() {
         .map(input => Number(input.value));
 }
 
-//Get the selected subject IDs
-function getSelectedSubjectIds() {
+//Get the selected subject and year values
+function getSelectedSubjectValues() {
     return [...subjectSelect.selectedOptions].map(option => option.value);
 }
 
@@ -208,21 +208,35 @@ function updateSubjectSummary() {
         : "No subjects selected.";
 }
 
-//Filter subjects using the selected year groups
-function updateSubjectChoices(selectedSubjectIds = getSelectedSubjectIds()) {
-    //Find every subject available in at least one selected year
+//Build year-specific subject options using the selected year groups
+function updateSubjectChoices(selectedSubjectValues = getSelectedSubjectValues()) {
+    //Create one option for every available subject and year combination
     const selectedYears = getSelectedYears();
-    const availableSubjects = data.subjects
-        .filter(subject => selectedYears.some(year => subject.years.includes(year)))
-        .sort((a, b) => a.name.localeCompare(b.name, "en"));
-    const availableSubjectIds = new Set(availableSubjects.map(subject => subject.id));
-    const retainedSubjectIds = new Set(
-        selectedSubjectIds.filter(id => availableSubjectIds.has(id))
+    const courseOptions = selectedYears
+        .flatMap(year => data.subjects
+            .filter(subject => subject.years.includes(year))
+            .map(subject => ({
+                subjectId: subject.id,
+                subjectName: subject.name,
+                year,
+                value: `${subject.id}--year-${year}`,
+                label: `${subject.name} (yr ${year})`
+            })))
+        .sort((a, b) =>
+            a.subjectName.localeCompare(b.subjectName, "en") || a.year - b.year
+        );
+    const availableCourseValues = new Set(courseOptions.map(course => course.value));
+    const retainedSubjectValues = new Set(
+        selectedSubjectValues.filter(value => availableCourseValues.has(value))
     );
-    const choices = availableSubjects.map(subject => ({
-        value: subject.id,
-        label: subject.name,
-        selected: retainedSubjectIds.has(subject.id)
+    const choices = courseOptions.map(course => ({
+        value: course.value,
+        label: course.label,
+        selected: retainedSubjectValues.has(course.value),
+        customProperties: {
+            subjectId: course.subjectId,
+            year: course.year
+        }
     }));
     const hasSelectedYears = selectedYears.length > 0;
 
@@ -251,7 +265,7 @@ function updateSubjectChoices(selectedSubjectIds = getSelectedSubjectIds()) {
     }
 
     subjectHelp.textContent = hasSelectedYears
-        ? `Showing ${availableSubjects.length} subjects available in Year ${selectedYears.join(", ")}.`
+        ? `Showing ${courseOptions.length} course options for ${selectedYears.length === 1 ? "Year" : "Years"} ${selectedYears.join(", ")}.`
         : "Select at least one year group first.";
 
     updateSubjectSummary();
@@ -269,7 +283,7 @@ subjectSelect.addEventListener("change", updateSubjectSummary);
 openSubjectsButton.addEventListener("click", () => {
     dialogSnapshot = {
         years: getSelectedYears(),
-        subjects: getSelectedSubjectIds()
+        subjects: getSelectedSubjectValues()
     };
     dialog.returnValue = "";
     dialog.showModal();
@@ -292,7 +306,7 @@ subjectsForm.addEventListener("submit", event => {
         return;
     }
 
-    if (getSelectedSubjectIds().length === 0) {
+    if (getSelectedSubjectValues().length === 0) {
         event.preventDefault();
         subjectHelp.textContent = "Choose at least one subject.";
 

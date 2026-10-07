@@ -216,6 +216,155 @@ body {
     }
 }
 
+/*Style the subject selection popup*/
+#subjects-dialog {
+    box-sizing: border-box;
+    width: min(40rem, calc(100% - 2rem));
+    max-height: calc(100vh - 2rem);
+    padding: 0;
+    overflow: visible;
+    border: 1px solid var(--border-colour);
+    border-radius: 1.25rem;
+    background: var(--card-background);
+    box-shadow: 0 1rem 3rem rgb(74 64 58 / 22%);
+    color: var(--text-colour);
+}
+
+#subjects-dialog::backdrop {
+    background: rgb(74 64 58 / 28%);
+}
+
+#subjects-dialog form {
+    box-sizing: border-box;
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 5vw, 2rem);
+    font-family: "Indie Flower", cursive;
+}
+
+#subjects-dialog h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 400;
+}
+
+/*Style the year group choices*/
+#subjects-dialog fieldset {
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: rgb(211 160 127 / 12%);
+}
+
+#subjects-dialog legend {
+    padding: 0 0.4rem;
+}
+
+#subjects-dialog .year-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+#subjects-dialog .year-options label {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 999px;
+    background: var(--field-background);
+    cursor: pointer;
+}
+
+#subjects-dialog input[type="checkbox"] {
+    accent-color: var(--terracotta);
+}
+
+/*Style the subject search field*/
+#subjects-dialog label[for="subjects"] {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+#subjects-dialog #subject-help {
+    margin: 0 0 0.6rem;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.82rem;
+}
+
+#subjects-dialog .choices {
+    margin: 0;
+}
+
+#subjects-dialog .choices__inner {
+    min-height: 3.1rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: var(--field-background);
+    font-size: 0.9rem;
+}
+
+#subjects-dialog .choices.is-focused .choices__inner,
+#subjects-dialog .choices.is-open .choices__inner {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 0.2rem rgb(211 160 127 / 20%);
+}
+
+#subjects-dialog .choices__list--dropdown,
+#subjects-dialog .choices__list[aria-expanded] {
+    border-color: var(--border-colour);
+    border-radius: 0.8rem;
+    background: var(--field-background);
+}
+
+#subjects-dialog .choices__list--multiple .choices__item {
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--text-colour);
+}
+
+#subjects-dialog .choices__input {
+    background: transparent;
+    color: var(--text-colour);
+    font: inherit;
+}
+
+/*Style the subject popup buttons*/
+#subjects-dialog .dialog-actions {
+    display: flex;
+    gap: 0.65rem;
+    justify-content: flex-end;
+}
+
+#subjects-dialog button {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 999px;
+    background: var(--field-background);
+    color: var(--text-colour);
+    cursor: pointer;
+    font: inherit;
+}
+
+#subjects-dialog #save-subjects {
+    border-color: var(--terracotta);
+    background: var(--terracotta);
+}
+
+#subjects-dialog button:hover {
+    transform: translateY(-1px);
+}
+
+#subjects-dialog button:focus-visible {
+    outline: 2px solid var(--text-colour);
+    outline-offset: 2px;
+}
+
 /*Set the availability popup width*/
 #availability-dialog {
     width: min(48rem, calc(100% - 2rem));
