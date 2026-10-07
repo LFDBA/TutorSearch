@@ -1,0 +1,282 @@
+/*Page colour palette*/
+:root {
+    --page-background: #f3efe7;
+    --card-background: #fbf8f2;
+    --field-background: #fffdf8;
+    --text-colour: #4a403a;
+    --muted-text: #776d65;
+    --border-colour: #d9d0c6;
+    --terracotta: #d3a07f;
+    --sage: #aebda5;
+    --teal: #9fb8b4;
+    --soft-shadow: 0 0.75rem 1.8rem rgb(74 64 58 / 12%);
+}
+
+/*Set the page background*/
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--page-background);
+}
+
+/*Centre the visible signup page*/
+.signup-page {
+    width: min(44rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 3.5rem 0;
+}
+
+/*Style the signup heading*/
+.signup-header {
+    margin-bottom: 1.75rem;
+    color: var(--text-colour);
+    text-align: center;
+    font-family: "Indie Flower", cursive;
+}
+
+.signup-brand {
+    margin: 0;
+    color: var(--terracotta);
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+}
+
+.signup-header h1 {
+    margin: 0.35rem 0;
+    font-size: clamp(2rem, 7vw, 3rem);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.signup-intro {
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 0.95rem;
+}
+
+/*Create the main signup card*/
+.signup-card {
+    box-sizing: border-box;
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid var(--border-colour);
+    border-radius: 1.25rem;
+    background: var(--card-background);
+    box-shadow: var(--soft-shadow);
+    color: var(--text-colour);
+    font-family: "Indie Flower", cursive;
+}
+
+.signup-card * {
+    box-sizing: border-box;
+}
+
+/*Lay out the text inputs*/
+.form-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.form-field > span {
+    font-size: 0.9rem;
+}
+
+.form-field > input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    outline: none;
+    background: var(--field-background);
+    color: var(--text-colour);
+    font: inherit;
+}
+
+.form-field > input::placeholder {
+    color: #a49a91;
+}
+
+.form-field > input:focus {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 0.2rem rgb(211 160 127 / 20%);
+}
+
+/*Match the visible language dropdown to the text fields*/
+.signup-card .choices {
+    margin: 0;
+}
+
+.signup-card .choices__inner {
+    min-height: 3.1rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: var(--field-background);
+    font-size: 0.9rem;
+}
+
+.signup-card .choices.is-focused .choices__inner,
+.signup-card .choices.is-open .choices__inner {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 0.2rem rgb(211 160 127 / 20%);
+}
+
+.signup-card .choices__list--dropdown,
+.signup-card .choices__list[aria-expanded] {
+    border-color: var(--border-colour);
+    border-radius: 0.8rem;
+    background: var(--field-background);
+}
+
+.signup-card .choices__list--multiple .choices__item {
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--text-colour);
+}
+
+.signup-card .choices__input {
+    background: transparent;
+    color: var(--text-colour);
+    font: inherit;
+}
+
+/*Create the pastel selection panels*/
+.signup-selector {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    min-height: 7rem;
+    padding: 1.1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.4rem 0.9rem rgb(74 64 58 / 10%);
+}
+
+.signup-selector--terracotta {
+    background: var(--terracotta);
+}
+
+.signup-selector--sage {
+    background: var(--sage);
+}
+
+.signup-selector h2,
+.signup-selector p {
+    margin: 0;
+}
+
+.signup-selector h2 {
+    font-size: 1.15rem;
+    font-weight: 400;
+}
+
+.signup-selector p {
+    margin-top: 0.35rem;
+    color: rgb(74 64 58 / 80%);
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+}
+
+/*Style only the buttons on the visible signup card*/
+.signup-selector button {
+    padding: 0.65rem 1rem;
+    border: 1px solid rgb(74 64 58 / 12%);
+    border-radius: 999px;
+    background: var(--field-background);
+    box-shadow: 0 0.2rem 0.5rem rgb(74 64 58 / 10%);
+    color: var(--text-colour);
+    cursor: pointer;
+    font: inherit;
+}
+
+.signup-selector button:hover {
+    transform: translateY(-1px);
+}
+
+.signup-selector button:focus-visible {
+    outline: 2px solid var(--text-colour);
+    outline-offset: 2px;
+}
+
+/*Stack selection panels on small screens*/
+@media (max-width: 34rem) {
+    .signup-page {
+        padding: 2rem 0;
+    }
+
+    .signup-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .signup-selector button {
+        width: 100%;
+    }
+}
+
+/*Set the availability popup width*/
+#availability-dialog {
+    width: min(48rem, calc(100% - 2rem));
+}
+
+/*Space the time labels across the timeline*/
+.availability-scale {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Create the clickable 24-hour timeline*/
+.availability-track {
+    position: relative;
+    height: 4rem;
+    border: 1px solid;
+    touch-action: none;
+    user-select: none;
+}
+
+/*Display each availability timeframe on the timeline*/
+.availability-timeframe {
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid;
+    background: lightgray;
+    cursor: grab;
+}
+
+/*Show which timeframe is selected*/
+.availability-timeframe.is-selected {
+    outline: 2px solid;
+}
+
+/*Keep the timeframe text inside its block*/
+.availability-timeframe-label {
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/*Create draggable resize handles*/
+.availability-resize-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0.5rem;
+    background: gray;
+    cursor: ew-resize;
+}
+
+/*Place the start handle on the left*/
+.availability-resize-handle[data-edge="start"] {
+    left: 0;
+}
+
+/*Place the end handle on the right*/
+.availability-resize-handle[data-edge="end"] {
+    right: 0;
+}

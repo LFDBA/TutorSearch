@@ -5,11 +5,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tutor Add</title>
 
+        <!--Signup page font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap"
+        >
+
         <!--Searchable dropdown styles and script-->
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/styles/choices.min.css"
         >
+        <!--Signup page styles-->
+        <link rel="stylesheet" href="signup.css">
         <script src="https://cdn.jsdelivr.net/npm/choices.js@11.1.0/public/assets/scripts/choices.min.js"></script>
 
         <!--Database and signup scripts-->
@@ -17,76 +27,16 @@
         <script src="supabase-client.js"></script>
         <script src="signup.js" type="module"></script>
 
-        <!--Minimum styles needed for the availability timeline-->
-        <style>
-            /*Set the availability popup width*/
-            #availability-dialog {
-                width: min(48rem, calc(100% - 2rem));
-            }
-
-            /*Space the time labels across the timeline*/
-            .availability-scale {
-                display: flex;
-                justify-content: space-between;
-            }
-
-            /*Create the clickable 24-hour timeline*/
-            .availability-track {
-                position: relative;
-                height: 4rem;
-                border: 1px solid;
-                touch-action: none;
-                user-select: none;
-            }
-
-            /*Display each availability timeframe on the timeline*/
-            .availability-timeframe {
-                position: absolute;
-                top: 0.5rem;
-                bottom: 0.5rem;
-                box-sizing: border-box;
-                overflow: hidden;
-                border: 1px solid;
-                background: lightgray;
-                cursor: grab;
-            }
-
-            /*Show which timeframe is selected*/
-            .availability-timeframe.is-selected {
-                outline: 2px solid;
-            }
-
-            /*Keep the timeframe text inside its block*/
-            .availability-timeframe-label {
-                padding: 0 0.75rem;
-                font-size: 0.75rem;
-                white-space: nowrap;
-                pointer-events: none;
-            }
-
-            /*Create draggable resize handles*/
-            .availability-resize-handle {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 0.5rem;
-                background: gray;
-                cursor: ew-resize;
-            }
-
-            /*Place the start handle on the left*/
-            .availability-resize-handle[data-edge="start"] {
-                left: 0;
-            }
-
-            /*Place the end handle on the right*/
-            .availability-resize-handle[data-edge="end"] {
-                right: 0;
-            }
-        </style>
     </head>
     <body>
-        <main>
+        <main class="signup-page">
+            <!--Signup page heading-->
+            <header class="signup-header">
+                <p class="signup-brand">Tutor Search</p>
+                <h1>Create your tutor profile</h1>
+                <p class="signup-intro">Tell students what you can help them with.</p>
+            </header>
+
             <!--Subject selection popup-->
             <dialog id="subjects-dialog" aria-labelledby="subjects-dialog-title">
                 <form id="subjects-form" method="dialog" novalidate>
@@ -172,53 +122,67 @@
                     </section>
 
                     <!--Availability popup controls-->
-                    <div>
+                    <div class="dialog-actions">
                         <button value="cancel">Cancel</button>
                         <button value="confirm">Done</button>
                     </div>
                 </form>
             </dialog>
 
-            <!--Tutor name input-->
-            <label for="name">
-                Full name
-                <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    autocomplete="name"
-                    maxlength="100"
-                    required
-                >
-            </label>
-            <br>
+            <!--Tutor details card-->
+            <section class="signup-card" aria-label="Tutor details">
+                <!--Tutor name input-->
+                <label class="form-field" for="name">
+                    <span>Full name</span>
+                    <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        autocomplete="name"
+                        maxlength="100"
+                        placeholder="Your name"
+                        required
+                    >
+                </label>
 
-            <!--Tutor email input-->
-            <label for="email">
-                Email
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    required
-                >
-            </label>
-            <br>
+                <!--Tutor email input-->
+                <label class="form-field" for="email">
+                    <span>Email</span>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                        required
+                    >
+                </label>
 
-            <!--Tutor language input-->
-            <label for="languages">
-                Languages
-                <select id="languages" name="language" multiple required></select>
-            </label>
-            <br>
-            <!--Open the subject popup and show its result-->
-            <button id="open-subjects" type="button">Choose subjects</button>
-            <p id="subject-summary" aria-live="polite">No subjects selected.</p>
-            <!--Open the availability popup and store its result-->
-            <button id="open-availability" type="button">Choose availability</button>
-            <p id="availability-summary" aria-live="polite">No availability selected.</p>
-            <input id="availability-data" name="availability" type="hidden" value="[]">
+                <!--Tutor language input-->
+                <label class="form-field" for="languages">
+                    <span>Languages</span>
+                    <select id="languages" name="language" multiple required></select>
+                </label>
+
+                <!--Open the subject popup and show its result-->
+                <div class="signup-selector signup-selector--terracotta">
+                    <div>
+                        <h2>Subjects</h2>
+                        <p id="subject-summary" aria-live="polite">No subjects selected.</p>
+                    </div>
+                    <button id="open-subjects" type="button">Choose subjects</button>
+                </div>
+
+                <!--Open the availability popup and store its result-->
+                <div class="signup-selector signup-selector--sage">
+                    <div>
+                        <h2>Availability</h2>
+                        <p id="availability-summary" aria-live="polite">No availability selected.</p>
+                    </div>
+                    <button id="open-availability" type="button">Choose availability</button>
+                    <input id="availability-data" name="availability" type="hidden" value="[]">
+                </div>
+            </section>
         </main>
     </body>
 </html>
