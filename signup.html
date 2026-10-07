@@ -18,10 +18,62 @@
     </head>
     <body>
         <main>
+            <dialog id="subjects-dialog" aria-labelledby="subjects-dialog-title">
+                <form id="subjects-form" method="dialog" novalidate>
+                    <h2 id="subjects-dialog-title">Select subjects</h2>
+
+                    <fieldset>
+                        <legend>Year groups</legend>
+                        <div class="year-options">
+                            <label><input name="year" type="checkbox" value="9"> Year 9</label>
+                            <label><input name="year" type="checkbox" value="10"> Year 10</label>
+                            <label><input name="year" type="checkbox" value="11"> Year 11</label>
+                            <label><input name="year" type="checkbox" value="12"> Year 12</label>
+                            <label><input name="year" type="checkbox" value="13"> Year 13</label>
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <label for="subjects">Subjects</label>
+                        <p id="subject-help">Select at least one year group first.</p>
+                        <select
+                            id="subjects"
+                            name="subject"
+                            multiple
+                            required
+                            disabled
+                            data-placeholder="Search and select subjects"
+                            aria-describedby="subject-help"
+                        ></select>
+                    </div>
+
+                    <div class="dialog-actions">
+                        <button value="cancel">Cancel</button>
+                        <button id="save-subjects" value="confirm">Done</button>
+                    </div>
+                </form>
+            </dialog>
+
+            <label for="name">
+                Full name
+                <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    autocomplete="name"
+                    maxlength="100"
+                    required
+                >
+            </label>
+            <br>
+
             <label for="languages">
                 Languages
                 <select id="languages" name="language" multiple required></select>
             </label>
+            <br>
+            <button id="open-subjects" type="button">Choose subjects</button>
+            <p id="subject-summary" aria-live="polite">No subjects selected.</p>
         </main>
     </body>
 </html>

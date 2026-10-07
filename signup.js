@@ -142,9 +142,157 @@ if (typeof Choices !== "undefined") {
 }
 
 const data = await fetch("./subjects.json").then(response => response.json());
+const dialog = document.querySelector("#subjects-dialog");
+const subjectsForm = document.querySelector("#subjects-form");
+const openSubjectsButton = document.querySelector("#open-subjects");
+const yearInputs = [...document.querySelectorAll('input[name="year"]')];
+const subjectSelect = document.querySelector("#subjects");
+const subjectHelp = document.querySelector("#subject-help");
+const subjectSummary = document.querySelector("#subject-summary");
 
-const year12Subjects = data.subjects.filter(subject =>
-    subject.years.includes(12)
-);
+let dialogSnapshot;
+let subjectChoices;
 
-console.log(data);
+if (typeof Choices !== "undefined") {
+    subjectChoices = new Choices(subjectSelect, {
+        removeItemButton: true,
+        searchEnabled: true,
+        searchFields: ["label"],
+        searchResultLimit: -1,
+        searchPlaceholderValue: "Search subjects",
+        placeholder: true,
+        placeholderValue: "Search and select subjects",
+        noResultsText: "No matching subjects",
+        noChoicesText: "Select a year group first",
+        itemSelectText: "",
+        fuseOptions: {
+            threshold: 0.3
+        },
+        shouldSort: false
+    });
+
+    subjectChoices.disable();
+}
+
+function getSelectedYears() {
+    return yearInputs
+        .filter(input => input.checked)
+        .map(input => Number(input.value));
+}
+
+function getSelectedSubjectIds() {
+    return [...subjectSelect.selectedOptions].map(option => option.value);
+}
+
+function updateSubjectSummary() {
+    const selectedSubjects = [...subjectSelect.selectedOptions]
+        .map(option => option.textContent);
+
+    subjectSummary.textContent = selectedSubjects.length
+        ? `${selectedSubjects.length} selected: ${selectedSubjects.join(", ")}`
+        : "No subjects selected.";
+}
+
+function updateSubjectChoices(selectedSubjectIds = getSelectedSubjectIds()) {
+    const selectedYears = getSelectedYears();
+    const availableSubjects = data.subjects
+        .filter(subject => selectedYears.some(year => subject.years.includes(year)))
+        .sort((a, b) => a.name.localeCompare(b.name, "en"));
+    const availableSubjectIds = new Set(availableSubjects.map(subject => subject.id));
+    const retainedSubjectIds = new Set(
+        selectedSubjectIds.filter(id => availableSubjectIds.has(id))
+    );
+    const choices = availableSubjects.map(subject => ({
+        value: subject.id,
+        label: subject.name,
+        selected: retainedSubjectIds.has(subject.id)
+    }));
+    const hasSelectedYears = selectedYears.length > 0;
+
+    if (subjectChoices) {
+        subjectChoices.setChoices(choices, "value", "label", true, true, true);
+
+        if (hasSelectedYears) {
+            subjectChoices.enable();
+        } else {
+            subjectChoices.disable();
+        }
+    } else {
+        subjectSelect.replaceChildren();
+
+        for (const choice of choices) {
+            const option = document.createElement("option");
+            option.value = choice.value;
+            option.textContent = choice.label;
+            option.selected = choice.selected;
+            subjectSelect.append(option);
+        }
+
+        subjectSelect.disabled = !hasSelectedYears;
+    }
+
+    subjectHelp.textContent = hasSelectedYears
+        ? `Showing ${availableSubjects.length} subjects available in Year ${selectedYears.join(", ")}.`
+        : "Select at least one year group first.";
+
+    updateSubjectSummary();
+}
+
+for (const yearInput of yearInputs) {
+    yearInput.addEventListener("change", () => updateSubjectChoices());
+}
+
+subjectSelect.addEventListener("change", updateSubjectSummary);
+
+openSubjectsButton.addEventListener("click", () => {
+    dialogSnapshot = {
+        years: getSelectedYears(),
+        subjects: getSelectedSubjectIds()
+    };
+    dialog.returnValue = "";
+    dialog.showModal();
+
+    if (dialogSnapshot.years.length === 0) {
+        yearInputs[0].focus();
+    }
+});
+
+subjectsForm.addEventListener("submit", event => {
+    if (event.submitter?.value !== "confirm") {
+        return;
+    }
+
+    if (getSelectedYears().length === 0) {
+        event.preventDefault();
+        subjectHelp.textContent = "Choose at least one year group.";
+        yearInputs[0].focus();
+        return;
+    }
+
+    if (getSelectedSubjectIds().length === 0) {
+        event.preventDefault();
+        subjectHelp.textContent = "Choose at least one subject.";
+
+        if (subjectChoices) {
+            subjectChoices.showDropdown();
+        } else {
+            subjectSelect.focus();
+        }
+    }
+});
+
+dialog.addEventListener("close", () => {
+    if (dialog.returnValue !== "confirm" && dialogSnapshot) {
+        const savedYears = new Set(dialogSnapshot.years);
+
+        for (const yearInput of yearInputs) {
+            yearInput.checked = savedYears.has(Number(yearInput.value));
+        }
+
+        updateSubjectChoices(dialogSnapshot.subjects);
+    } else {
+        updateSubjectSummary();
+    }
+
+    dialogSnapshot = undefined;
+});
