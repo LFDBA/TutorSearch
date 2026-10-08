@@ -75,6 +75,105 @@ function matchesLanguageFilter(tutor, searchedLanguages) {
     );
 }
 
+//Return the availability array stored by Supabase
+function getTutorAvailability(tutor) {
+    const availability = tutor.availability;
+
+    if (Array.isArray(availability)) {
+        return availability;
+    }
+
+    //Support availability arrays that have been stored as JSON text
+    if (typeof availability === "string") {
+        try {
+            const parsedAvailability = JSON.parse(availability);
+            return Array.isArray(parsedAvailability) ? parsedAvailability : [];
+        } catch {
+            return [];
+        }
+    }
+
+    return [];
+}
+
+//Convert an HH:MM time into minutes after midnight
+function timeToMinutes(time) {
+    const timeParts = String(time).match(/^(\d{1,2}):(\d{2})$/);
+
+    if (!timeParts) {
+        return undefined;
+    }
+
+    const hours = Number(timeParts[1]);
+    const minutes = Number(timeParts[2]);
+
+    if (hours > 24 || minutes > 59 || (hours === 24 && minutes !== 0)) {
+        return undefined;
+    }
+
+    return (hours * 60) + minutes;
+}
+
+//Calculate how much of one searched timeframe a tutor covers
+function compareTimeframes(searchedTimeframe, tutorTimeframe) {
+    const searchedDay = String(searchedTimeframe.day).trim().toLowerCase();
+    const tutorDay = String(tutorTimeframe.day).trim().toLowerCase();
+
+    if (!searchedDay || searchedDay !== tutorDay) {
+        return 0;
+    }
+
+    const searchedStart = timeToMinutes(searchedTimeframe.start);
+    const searchedEnd = timeToMinutes(searchedTimeframe.end);
+    const tutorStart = timeToMinutes(tutorTimeframe.start);
+    const tutorEnd = timeToMinutes(tutorTimeframe.end);
+
+    if (
+        searchedStart === undefined ||
+        searchedEnd === undefined ||
+        tutorStart === undefined ||
+        tutorEnd === undefined ||
+        searchedStart >= searchedEnd ||
+        tutorStart >= tutorEnd
+    ) {
+        return 0;
+    }
+
+    const overlapStart = Math.max(searchedStart, tutorStart);
+    const overlapEnd = Math.min(searchedEnd, tutorEnd);
+    const overlapMinutes = Math.max(0, overlapEnd - overlapStart);
+    const searchedDuration = searchedEnd - searchedStart;
+
+    return overlapMinutes / searchedDuration;
+}
+
+//Average the best coverage for every searched availability timeframe
+function getTutorAvailabilityScore(tutor, searchedAvailability) {
+    if (searchedAvailability.length === 0) {
+        return null;
+    }
+
+    const tutorAvailability = getTutorAvailability(tutor);
+
+    if (tutorAvailability.length === 0) {
+        return 0;
+    }
+
+    const bestCoverageScores = searchedAvailability.map(searchedTimeframe =>
+        Math.max(
+            ...tutorAvailability.map(tutorTimeframe =>
+                compareTimeframes(searchedTimeframe, tutorTimeframe)
+            )
+        )
+    );
+    const totalCoverage = bestCoverageScores.reduce(
+        (total, coverage) => total + coverage,
+        0
+    );
+
+    return Math.round((totalCoverage / searchedAvailability.length) * 100);
+}
+
 //Create one comparable subject name from either an ID or a display name
 function getSubjectKey(subject) {
     return String(subject.subjectId ?? subject.subjectName ?? "")
@@ -132,20 +231,28 @@ function getTutorSubjectScore(tutor, searchedSubjects) {
 function searchForMatch(tutorList, profile) {
     const searchedSubjects = profile?.subjects ?? [];
     const searchedLanguages = profile?.languages ?? [];
+    const searchedAvailability = profile?.availability ?? [];
 
     return (Array.isArray(tutorList) ? tutorList : [])
         .filter(tutor => matchesLanguageFilter(tutor, searchedLanguages))
         .map(tutor => ({
             tutor,
-            score: getTutorSubjectScore(tutor, searchedSubjects)
+            subjectScore: getTutorSubjectScore(tutor, searchedSubjects),
+            availabilityScore: getTutorAvailabilityScore(tutor, searchedAvailability)
         }))
-        .filter(match => match.score > 0)
-        .sort((first, second) => second.score - first.score);
+        .filter(match =>
+            match.subjectScore > 0 &&
+            (searchedAvailability.length === 0 || match.availabilityScore > 0)
+        )
+        .sort((first, second) =>
+            second.subjectScore - first.subjectScore ||
+            (second.availabilityScore ?? 0) - (first.availabilityScore ?? 0)
+        );
 }
 
 searchTutorsButton.addEventListener("click", () => {
     const profile = getProfile();
     const matches = searchForMatch(tutors, profile);
 
-    console.log("Subject matches:", matches);
+    console.log("Tutor matches:", matches);
 });
