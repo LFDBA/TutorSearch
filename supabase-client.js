@@ -10,20 +10,18 @@ const db = supabase.createClient(
 
 
 //Add Data func
-async function addTutorData() {
+export async function addTutorData(tutor) {
 
     //Add to database and check for error
     const { error: insertError } = await db
         .from("Tutors")
         .insert({
-            name: "h",
-            language: ["japanese", "english"],
-            subject: ["eng", "mat"],
-            year: [13],
-            availability: [
-                { day: "monday", start: "02:00", end: "04:00" },
-                { day: "monday", start: "13:00", end: "14:00" }
-            ]
+
+            name: tutor.name,
+            language: tutor.languages,
+            subject: tutor.subjects,
+            availability: tutor.availability,
+            email: tutor.email
         });
 
     if (insertError) {

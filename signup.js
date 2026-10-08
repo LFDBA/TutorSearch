@@ -1,3 +1,5 @@
+import { addTutorData } from './supabase-client.js';
+
 //Standard language codes
 const languageCodes = [
     "aa", "ab", "ae", "af", "ak", "am", "an", "ar", "as", "av", "ay", "az",
@@ -900,7 +902,7 @@ signupForm.addEventListener("submit", event => {
         availability: selectedAvailability
     };
     const tutors = getStoredTutors();
-
+    addTutorData(tutor);
     tutors.push(tutor);
     localStorage.setItem(tutorsStorageKey, JSON.stringify(tutors));
     localStorage.removeItem(legacyTutorStorageKey);
