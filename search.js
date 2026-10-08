@@ -115,6 +115,10 @@ const languageLabelOverrides = {
 //Create readable names for the remaining language codes
 const languageNames = new Intl.DisplayNames(["en"], { type: "language" });
 const languageSelect = document.querySelector("#languages");
+const searchTutorsButton = document.querySelector("#search-tutors");
+
+//Current collection of search filters
+let profile;
 
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
@@ -199,6 +203,19 @@ function getSelectedYears() {
 //Get the selected subject and year values
 function getSelectedSubjectValues() {
     return [...subjectSelect.selectedOptions].map(option => option.value);
+}
+
+//Convert the selected course options into subject and year objects
+function getSelectedCourses() {
+    return [...subjectSelect.selectedOptions].map(option => {
+        const valueParts = option.value.match(/^(.*)--year-(\d+)$/);
+
+        return {
+            subjectId: valueParts?.[1] ?? option.value,
+            subjectName: option.textContent.replace(/\s+\(yr \d+\)$/, ""),
+            year: valueParts ? Number(valueParts[2]) : undefined
+        };
+    });
 }
 
 //Show the current subject selection below the button
@@ -722,3 +739,14 @@ availabilityDialog.addEventListener("close", () => {
 
 //Set the initial hidden value and summary
 syncAvailabilityOutput();
+
+//Build and log the current search profile
+searchTutorsButton.addEventListener("click", () => {
+    profile = {
+        languages: [...languageSelect.selectedOptions].map(option => option.value),
+        subjects: getSelectedCourses(),
+        availability: getFlatAvailability()
+    };
+
+    console.log("Search profile:", profile);
+});
