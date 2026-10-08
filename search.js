@@ -6,8 +6,10 @@ const searchTutorsButton = document.querySelector("#search-tutors");
 
 const tutors = await fetchTutorData();
 
-console.log(tutors);
-
 searchTutorsButton.addEventListener("click", () => {
-    console.log(getProfile());
+    const profile = getProfile()
 });
+
+function searchForMatch(){
+
+}
