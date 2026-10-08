@@ -119,6 +119,11 @@ const languageSelect = document.querySelector("#languages");
 const signupForm = document.querySelector("#signup-form");
 const nameInput = document.querySelector("#name");
 const emailInput = document.querySelector("#email");
+const profilePictureInput = document.querySelector("#profile-picture");
+const profilePicturePreview = document.querySelector("#profile-picture-preview");
+const profilePictureImage = document.querySelector("#profile-picture-image");
+const profilePictureInitial = document.querySelector("#profile-picture-initial");
+const removeProfilePictureButton = document.querySelector("#remove-profile-picture");
 const nameError = document.querySelector("#name-error");
 const emailError = document.querySelector("#email-error");
 const languagesError = document.querySelector("#languages-error");
@@ -126,6 +131,12 @@ const subjectsError = document.querySelector("#subjects-error");
 const availabilityError = document.querySelector("#availability-error");
 const tutorsStorageKey = "tutors";
 const legacyTutorStorageKey = "tutor";
+const maximumProfilePictureSize = 10 * 1024 * 1024;
+
+//Current processed profile picture and its latest loading request
+let profilePictureDataUrl = null;
+let profilePictureRequestId = 0;
+let profilePictureLoadPromise = Promise.resolve(null);
 
 //Build and sort the language dropdown options
 const languageOptions = languageCodes
@@ -177,8 +188,10 @@ function setValidationState(control, messageElement, message = "") {
         control.removeAttribute("aria-invalid");
     }
 
-    messageElement.textContent = message;
-    messageElement.hidden = !hasError;
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.hidden = !hasError;
+    }
 }
 
 //Check the basic shape of an email address
@@ -219,8 +232,155 @@ function getStoredTutors() {
     return [];
 }
 
+//Get the first visible character of the tutor's name
+function getProfileInitial(name) {
+    return [...name.trim()][0]?.toLocaleUpperCase() ?? "?";
+}
+
+//Keep the fallback initial in sync with the name input
+function updateProfileInitial() {
+    const initial = getProfileInitial(nameInput.value);
+
+    if (!profilePictureInitial || !profilePicturePreview) {
+        return;
+    }
+
+    profilePictureInitial.textContent = initial;
+
+    if (!profilePictureDataUrl) {
+        profilePicturePreview.setAttribute(
+            "aria-label",
+            initial === "?"
+                ? "Default profile picture"
+                : `Default profile picture: ${initial}`
+        );
+    }
+}
+
+//Display the name initial when no uploaded picture is selected
+function showDefaultProfilePicture() {
+    profilePictureDataUrl = null;
+
+    if (
+        !profilePictureImage ||
+        !profilePictureInitial ||
+        !removeProfilePictureButton
+    ) {
+        return;
+    }
+
+    profilePictureImage.src = "";
+    profilePictureImage.hidden = true;
+    profilePictureInitial.hidden = false;
+    removeProfilePictureButton.hidden = true;
+    updateProfileInitial();
+}
+
+//Resize and centre-crop an uploaded image for compact local storage
+function prepareProfilePicture(file) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        const imageUrl = URL.createObjectURL(file);
+
+        image.addEventListener("load", () => {
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            const outputSize = 320;
+            const sourceSize = Math.min(image.naturalWidth, image.naturalHeight);
+            const sourceX = (image.naturalWidth - sourceSize) / 2;
+            const sourceY = (image.naturalHeight - sourceSize) / 2;
+
+            URL.revokeObjectURL(imageUrl);
+
+            if (!context || sourceSize === 0) {
+                reject(new Error("The selected image could not be processed."));
+                return;
+            }
+
+            canvas.width = outputSize;
+            canvas.height = outputSize;
+            context.drawImage(
+                image,
+                sourceX,
+                sourceY,
+                sourceSize,
+                sourceSize,
+                0,
+                0,
+                outputSize,
+                outputSize
+            );
+            resolve(canvas.toDataURL("image/webp", 0.82));
+        });
+
+        image.addEventListener("error", () => {
+            URL.revokeObjectURL(imageUrl);
+            reject(new Error("The selected file is not a readable image."));
+        });
+
+        image.src = imageUrl;
+    });
+}
+
+//Preview a selected picture after checking and resizing it
+profilePictureInput?.addEventListener("change", () => {
+    const file = profilePictureInput.files[0];
+    const requestId = ++profilePictureRequestId;
+
+    if (!file) {
+        profilePictureLoadPromise = Promise.resolve(null);
+        showDefaultProfilePicture();
+        return;
+    }
+
+    if (!file.type.startsWith("image/") || file.size > maximumProfilePictureSize) {
+        profilePictureInput.value = "";
+        profilePictureLoadPromise = Promise.resolve(null);
+        console.warn(file.size > maximumProfilePictureSize
+            ? "Choose an image smaller than 10 MB."
+            : "Choose a valid image file.");
+        showDefaultProfilePicture();
+        return;
+    }
+
+    profilePictureLoadPromise = prepareProfilePicture(file)
+        .then(dataUrl => {
+            if (requestId !== profilePictureRequestId) {
+                return profilePictureDataUrl;
+            }
+
+            profilePictureDataUrl = dataUrl;
+            profilePictureImage.src = dataUrl;
+            profilePictureImage.hidden = false;
+            profilePictureInitial.hidden = true;
+            removeProfilePictureButton.hidden = false;
+            profilePicturePreview.setAttribute("aria-label", "Selected profile picture");
+            return dataUrl;
+        })
+        .catch(error => {
+            if (requestId === profilePictureRequestId) {
+                profilePictureInput.value = "";
+                console.error(error.message);
+                showDefaultProfilePicture();
+            }
+
+            return null;
+        });
+});
+
+//Remove the selected picture and return to the name initial
+removeProfilePictureButton?.addEventListener("click", () => {
+    profilePictureRequestId += 1;
+    profilePictureLoadPromise = Promise.resolve(null);
+    profilePictureInput.value = "";
+    showDefaultProfilePicture();
+});
+
 //Clear text-field errors while the user corrects them
-nameInput.addEventListener("input", () => setValidationState(nameInput, nameError));
+nameInput.addEventListener("input", () => {
+    setValidationState(nameInput, nameError);
+    updateProfileInitial();
+});
 emailInput.addEventListener("input", () => setValidationState(emailInput, emailError));
 languageSelect.addEventListener("change", () => {
     if (languageSelect.selectedOptions.length > 0) {
@@ -819,7 +979,7 @@ availabilityDialog.addEventListener("close", () => {
 syncAvailabilityOutput();
 
 //Validate the signup form, then store and log the tutor without uploading it
-signupForm.addEventListener("submit", event => {
+signupForm.addEventListener("submit", async event => {
     event.preventDefault();
 
     const name = nameInput.value.trim();
@@ -894,9 +1054,12 @@ signupForm.addEventListener("submit", event => {
         return;
     }
 
+    const profilePicture = await profilePictureLoadPromise;
     const tutor = {
         name,
         email,
+        profilePicture,
+        profileInitial: getProfileInitial(name),
         languages,
         subjects,
         availability: selectedAvailability

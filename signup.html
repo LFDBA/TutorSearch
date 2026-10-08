@@ -147,6 +147,30 @@
                     <span id="name-error" class="validation-message" hidden></span>
                 </label>
 
+                <!--Optional tutor profile picture-->
+                <div class="profile-picture-field">
+                    <div
+                        id="profile-picture-preview"
+                        class="profile-picture-preview"
+                        aria-label="Default profile picture"
+                    >
+                        <img id="profile-picture-image" src="" alt="" hidden>
+                        <span id="profile-picture-initial" aria-hidden="true">?</span>
+                    </div>
+                    <div class="profile-picture-controls">
+                        <label for="profile-picture">Profile picture <span>(optional)</span></label>
+                        <input
+                            id="profile-picture"
+                            name="profile-picture"
+                            type="file"
+                            accept="image/*"
+                        >
+                        <button id="remove-profile-picture" type="button" hidden>
+                            Remove picture
+                        </button>
+                    </div>
+                </div>
+
                 <!--Tutor email input-->
                 <label class="form-field" for="email">
                     <span>Email</span>
