@@ -131,7 +131,7 @@
             </dialog>
 
             <!--Visible search filters-->
-            <div class="search-filters">
+            <div class="search-filters signup-card">
                 <!--Open the subject popup and show its result-->
                 <section class="signup-selector signup-selector--terracotta" aria-labelledby="subject-selector-title">
                     <div>
@@ -150,6 +150,12 @@
                     <button id="open-availability" type="button">Choose availability</button>
                     <input id="availability-data" name="availability" type="hidden" value="[]">
                 </section>
+
+                <!--Tutor language input-->
+                <label class="form-field" for="languages">
+                    <span>Languages</span>
+                    <select id="languages" name="language" multiple></select>
+                </label>
             </div>
         </main>
     </body>

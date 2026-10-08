@@ -61,6 +61,74 @@ body {
     gap: 1.25rem;
 }
 
+/*Create the main search card*/
+.signup-card {
+    box-sizing: border-box;
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid var(--border-colour);
+    border-radius: 1.25rem;
+    background: var(--card-background);
+    box-shadow: var(--soft-shadow);
+    color: var(--text-colour);
+    font-family: "Indie Flower", cursive;
+}
+
+.signup-card * {
+    box-sizing: border-box;
+}
+
+/*Lay out the language input*/
+.form-field {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.form-field > span {
+    font-size: 0.9rem;
+}
+
+/*Match the visible language dropdown to the signup field*/
+.signup-card .choices {
+    margin: 0;
+}
+
+.signup-card .choices__inner {
+    min-height: 3.1rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 1rem;
+    background: var(--field-background);
+    font-size: 0.9rem;
+}
+
+.signup-card .choices.is-focused .choices__inner,
+.signup-card .choices.is-open .choices__inner {
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 0.2rem rgb(211 160 127 / 20%);
+}
+
+.signup-card .choices__list--dropdown,
+.signup-card .choices__list[aria-expanded] {
+    border-color: var(--border-colour);
+    border-radius: 0.8rem;
+    background: var(--field-background);
+}
+
+.signup-card .choices__list--multiple .choices__item {
+    border: 0;
+    border-radius: 999px;
+    background: var(--teal);
+    color: var(--text-colour);
+}
+
+.signup-card .choices__input {
+    background: transparent;
+    color: var(--text-colour);
+    font: inherit;
+}
+
 /*Create the pastel selection panel*/
 .signup-selector {
     box-sizing: border-box;
