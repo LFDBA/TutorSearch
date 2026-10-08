@@ -30,7 +30,11 @@ export async function addTutorData(tutor) {
     }
 
     console.log("Inserted!");
+}
 
+
+//Fetch Data func
+export async function fetchTutorData() {
     //Fetch data and check for error
     const { data, error: selectError } = await db
         .from("Tutors")
@@ -41,7 +45,5 @@ export async function addTutorData(tutor) {
         return;
     }
 
-    console.log(data);
+    return data;
 }
-
-// addTutorData();

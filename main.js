@@ -747,6 +747,9 @@ searchTutorsButton.addEventListener("click", () => {
         subjects: getSelectedCourses(),
         availability: getFlatAvailability()
     };
-
-    console.log("Search profile:", profile);
 });
+
+
+export function getProfile(){
+    return profile;
+}
