@@ -34,6 +34,47 @@ function getTutorSubjects(tutor) {
     return [];
 }
 
+//Return the language array stored by Supabase
+function getTutorLanguages(tutor) {
+    const languages = tutor.language ?? tutor.languages;
+
+    if (Array.isArray(languages)) {
+        return languages;
+    }
+
+    //Support language arrays that have been stored as JSON text
+    if (typeof languages === "string") {
+        try {
+            const parsedLanguages = JSON.parse(languages);
+            return Array.isArray(parsedLanguages) ? parsedLanguages : [parsedLanguages];
+        } catch {
+            return [languages];
+        }
+    }
+
+    return [];
+}
+
+//Make language names comparable despite differences in case or spacing
+function getLanguageKey(language) {
+    return String(language).trim().toLowerCase();
+}
+
+//Keep tutors who speak at least one selected language
+function matchesLanguageFilter(tutor, searchedLanguages) {
+    if (searchedLanguages.length === 0) {
+        return true;
+    }
+
+    const tutorLanguages = new Set(
+        getTutorLanguages(tutor).map(getLanguageKey)
+    );
+
+    return searchedLanguages.some(language =>
+        tutorLanguages.has(getLanguageKey(language))
+    );
+}
+
 //Create one comparable subject name from either an ID or a display name
 function getSubjectKey(subject) {
     return String(subject.subjectId ?? subject.subjectName ?? "")
@@ -90,8 +131,10 @@ function getTutorSubjectScore(tutor, searchedSubjects) {
 //Score every tutor and place the strongest subject matches first
 function searchForMatch(tutorList, profile) {
     const searchedSubjects = profile?.subjects ?? [];
+    const searchedLanguages = profile?.languages ?? [];
 
     return (Array.isArray(tutorList) ? tutorList : [])
+        .filter(tutor => matchesLanguageFilter(tutor, searchedLanguages))
         .map(tutor => ({
             tutor,
             score: getTutorSubjectScore(tutor, searchedSubjects)
