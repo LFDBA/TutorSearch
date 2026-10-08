@@ -21,7 +21,9 @@ export async function addTutorData(tutor) {
             language: tutor.languages,
             subject: tutor.subjects,
             availability: tutor.availability,
-            email: tutor.email
+            email: tutor.email,
+            profile_picture: tutor.profilePicture,
+            profile_initial: tutor.profileInitial
         });
 
     if (insertError) {
