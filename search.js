@@ -13,6 +13,12 @@ const subjectMatchScores = {
     yearOnly: 10
 };
 
+//Contribution of each score to the regular tutor ranking
+const matchWeights = {
+    subject: 0.7,
+    availability: 0.3
+};
+
 //Return the subject array stored by Supabase
 function getTutorSubjects(tutor) {
     const subjects = tutor.subject ?? tutor.subjects;
@@ -114,13 +120,16 @@ function timeToMinutes(time) {
     return (hours * 60) + minutes;
 }
 
-//Calculate how much of one searched timeframe a tutor covers
+//Compare one searched timeframe with one tutor timeframe
 function compareTimeframes(searchedTimeframe, tutorTimeframe) {
     const searchedDay = String(searchedTimeframe.day).trim().toLowerCase();
     const tutorDay = String(tutorTimeframe.day).trim().toLowerCase();
 
     if (!searchedDay || searchedDay !== tutorDay) {
-        return 0;
+        return {
+            score: 0,
+            hasOverlap: false
+        };
     }
 
     const searchedStart = timeToMinutes(searchedTimeframe.start);
@@ -136,7 +145,10 @@ function compareTimeframes(searchedTimeframe, tutorTimeframe) {
         searchedStart >= searchedEnd ||
         tutorStart >= tutorEnd
     ) {
-        return 0;
+        return {
+            score: 0,
+            hasOverlap: false
+        };
     }
 
     const overlapStart = Math.max(searchedStart, tutorStart);
@@ -144,34 +156,66 @@ function compareTimeframes(searchedTimeframe, tutorTimeframe) {
     const overlapMinutes = Math.max(0, overlapEnd - overlapStart);
     const searchedDuration = searchedEnd - searchedStart;
 
-    return overlapMinutes / searchedDuration;
+    if (overlapMinutes > 0) {
+        return {
+            score: Math.round((overlapMinutes / searchedDuration) * 100),
+            hasOverlap: true
+        };
+    }
+
+    //Give same-day near misses a small score for fallback recommendations
+    const gapMinutes = tutorStart >= searchedEnd
+        ? tutorStart - searchedEnd
+        : searchedStart - tutorEnd;
+    const proximityScore = Math.max(
+        1,
+        Math.round(20 * (1 - (gapMinutes / (24 * 60))))
+    );
+
+    return {
+        score: proximityScore,
+        hasOverlap: false
+    };
 }
 
-//Average the best coverage for every searched availability timeframe
-function getTutorAvailabilityScore(tutor, searchedAvailability) {
+//Average the closest comparison for every searched availability timeframe
+function getTutorAvailabilityMatch(tutor, searchedAvailability) {
     if (searchedAvailability.length === 0) {
-        return null;
+        return {
+            score: null,
+            hasOverlap: true
+        };
     }
 
     const tutorAvailability = getTutorAvailability(tutor);
 
     if (tutorAvailability.length === 0) {
-        return 0;
+        return {
+            score: 0,
+            hasOverlap: false
+        };
     }
 
-    const bestCoverageScores = searchedAvailability.map(searchedTimeframe =>
-        Math.max(
-            ...tutorAvailability.map(tutorTimeframe =>
-                compareTimeframes(searchedTimeframe, tutorTimeframe)
-            )
-        )
-    );
-    const totalCoverage = bestCoverageScores.reduce(
-        (total, coverage) => total + coverage,
+    const bestComparisons = searchedAvailability.map(searchedTimeframe => {
+        const comparisons = tutorAvailability.map(tutorTimeframe =>
+            compareTimeframes(searchedTimeframe, tutorTimeframe)
+        );
+
+        //Prefer an actual overlap, even when a near miss has a larger numeric score
+        return comparisons.sort((first, second) =>
+            Number(second.hasOverlap) - Number(first.hasOverlap) ||
+            second.score - first.score
+        )[0];
+    });
+    const totalScore = bestComparisons.reduce(
+        (total, comparison) => total + comparison.score,
         0
     );
 
-    return Math.round((totalCoverage / searchedAvailability.length) * 100);
+    return {
+        score: Math.round(totalScore / bestComparisons.length),
+        hasOverlap: bestComparisons.some(comparison => comparison.hasOverlap)
+    };
 }
 
 //Create one comparable subject name from either an ID or a display name
@@ -227,32 +271,70 @@ function getTutorSubjectScore(tutor, searchedSubjects) {
     return Math.round(totalScore / searchedSubjects.length);
 }
 
-//Score every tutor and place the strongest subject matches first
+//Combine subject and availability without adding language to the score
+function getOverallScore(subjectScore, availabilityScore) {
+    if (availabilityScore === null) {
+        return subjectScore;
+    }
+
+    return Math.round(
+        (subjectScore * matchWeights.subject) +
+        (availabilityScore * matchWeights.availability)
+    );
+}
+
+//Create direct matches and availability-based fallback suggestions
 function searchForMatch(tutorList, profile) {
     const searchedSubjects = profile?.subjects ?? [];
     const searchedLanguages = profile?.languages ?? [];
     const searchedAvailability = profile?.availability ?? [];
 
-    return (Array.isArray(tutorList) ? tutorList : [])
+    const candidates = (Array.isArray(tutorList) ? tutorList : [])
         .filter(tutor => matchesLanguageFilter(tutor, searchedLanguages))
-        .map(tutor => ({
-            tutor,
-            subjectScore: getTutorSubjectScore(tutor, searchedSubjects),
-            availabilityScore: getTutorAvailabilityScore(tutor, searchedAvailability)
-        }))
-        .filter(match =>
-            match.subjectScore > 0 &&
-            (searchedAvailability.length === 0 || match.availabilityScore > 0)
-        )
+        .map(tutor => {
+            const subjectScore = getTutorSubjectScore(tutor, searchedSubjects);
+            const availabilityMatch = getTutorAvailabilityMatch(
+                tutor,
+                searchedAvailability
+            );
+
+            return {
+                tutor,
+                subjectScore,
+                availabilityScore: availabilityMatch.score,
+                hasAvailabilityOverlap: availabilityMatch.hasOverlap,
+                score: getOverallScore(subjectScore, availabilityMatch.score)
+            };
+        })
+        .filter(match => match.subjectScore > 0);
+
+    const directMatches = candidates
+        .filter(match => match.hasAvailabilityOverlap)
         .sort((first, second) =>
-            second.subjectScore - first.subjectScore ||
-            (second.availabilityScore ?? 0) - (first.availabilityScore ?? 0)
+            second.score - first.score ||
+            second.subjectScore - first.subjectScore
         );
+
+    const availabilitySuggestions = [...candidates].sort((first, second) =>
+        (second.availabilityScore ?? 0) - (first.availabilityScore ?? 0) ||
+        second.subjectScore - first.subjectScore
+    );
+
+    return {
+        directMatches,
+        availabilitySuggestions
+    };
 }
 
 searchTutorsButton.addEventListener("click", () => {
     const profile = getProfile();
-    const matches = searchForMatch(tutors, profile);
+    const { directMatches, availabilitySuggestions } = searchForMatch(tutors, profile);
 
-    console.log("Tutor matches:", matches);
+    if (directMatches.length > 0) {
+        console.log("Tutor matches:", directMatches);
+    } else if (availabilitySuggestions.length > 0) {
+        console.log("no direct matches: consider", availabilitySuggestions);
+    } else {
+        console.log("No matching tutors found.");
+    }
 });
