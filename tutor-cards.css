@@ -1,0 +1,147 @@
+/*Tutor card test colour palette*/
+:root {
+    --page-background: #f3efe7;
+    --card-background: #fffdf8;
+    --text-colour: #4a403a;
+    --muted-text: #776d65;
+    --border-colour: #d9d0c6;
+    --terracotta: #d3a07f;
+    --sage: #aebda5;
+    --teal: #9fb8b4;
+}
+
+/*Centre the temporary card test*/
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    background: var(--page-background);
+    color: var(--text-colour);
+}
+
+.tutor-cards {
+    box-sizing: border-box;
+    width: min(28rem, calc(100% - 2rem));
+    padding: 2rem 0;
+}
+
+/*Create the main tutor card*/
+.tutor-card {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.25rem, 5vw, 1.75rem);
+    border: 1px solid var(--border-colour);
+    border-radius: 1.25rem;
+    background: var(--card-background);
+    box-shadow: 0 0.75rem 1.8rem rgb(74 64 58 / 12%);
+}
+
+/*Place the tutor picture beside their name*/
+.tutor-card-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.tutor-card h2,
+.tutor-card h3 {
+    margin: 0;
+    font-family: "Indie Flower", cursive;
+    font-weight: 400;
+}
+
+.tutor-card h2 {
+    font-size: 1.75rem;
+}
+
+.tutor-card h3 {
+    margin-bottom: 0.55rem;
+    font-size: 1.05rem;
+}
+
+/*Display either the profile photo or fallback initial*/
+.tutor-avatar {
+    display: grid;
+    flex: 0 0 auto;
+    width: 4.75rem;
+    aspect-ratio: 1;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--border-colour);
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0.25rem 0.65rem rgb(74 64 58 / 12%);
+    font-family: "Indie Flower", cursive;
+    font-size: 2rem;
+}
+
+.tutor-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/*Present each subject as a compact pill*/
+.subject-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.subject-list li:not(.empty-detail) {
+    padding: 0.4rem 0.7rem;
+    border-radius: 999px;
+    background: rgb(174 189 165 / 55%);
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+}
+
+/*Create the expandable availability panel*/
+.tutor-availability {
+    border: 1px solid var(--border-colour);
+    border-radius: 0.9rem;
+    background: rgb(211 160 127 / 13%);
+    font-family: system-ui, sans-serif;
+}
+
+.tutor-availability summary {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-family: "Indie Flower", cursive;
+    font-size: 1rem;
+}
+
+.tutor-availability[open] summary {
+    border-bottom: 1px solid var(--border-colour);
+}
+
+.availability-list {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0.85rem 1rem 1rem;
+    list-style: none;
+}
+
+.availability-list li {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    color: var(--muted-text);
+    font-size: 0.8rem;
+}
+
+.availability-list li span:first-child {
+    color: var(--text-colour);
+    font-weight: 600;
+}
+
+.empty-detail {
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+}
