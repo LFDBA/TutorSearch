@@ -496,8 +496,26 @@ function renderAvailability() {
     for (const button of availabilityDayButtons) {
         const day = button.dataset.availabilityDay;
         const count = availability[day].length;
+        const dayLabel = document.createElement("span");
 
-        button.textContent = count ? `${getDayLabel(day)} (${count})` : getDayLabel(day);
+        dayLabel.textContent = getDayLabel(day);
+        button.replaceChildren(dayLabel);
+
+        //Display the timeframe total as a separate coloured badge
+        if (count > 0) {
+            const countBadge = document.createElement("span");
+            countBadge.className = "availability-day-count";
+            countBadge.textContent = count;
+            countBadge.setAttribute("aria-hidden", "true");
+            button.append(countBadge);
+        }
+
+        button.setAttribute(
+            "aria-label",
+            count
+                ? `${getDayLabel(day)}, ${count} timeframe${count === 1 ? "" : "s"}`
+                : getDayLabel(day)
+        );
         button.setAttribute("aria-pressed", String(day === selectedAvailabilityDay));
     }
 

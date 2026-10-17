@@ -430,6 +430,9 @@ body {
 
 #availability-dialog [data-availability-day] {
     margin: 0.2rem;
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
     padding: 0.45rem 0.7rem;
     border: 1px solid var(--border-colour);
     border-radius: 999px;
@@ -438,6 +441,22 @@ body {
     color: var(--text-colour);
     cursor: pointer;
     font: inherit;
+}
+
+/*Separate the timeframe total from the day label*/
+#availability-dialog .availability-day-count {
+    display: inline-grid;
+    min-width: 1.1rem;
+    min-height: 1.1rem;
+    padding: 0.05rem 0.25rem;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--terracotta);
+    color: var(--text-colour);
+    font-family: system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
 }
 
 #availability-dialog [data-availability-day][aria-pressed="true"] {
