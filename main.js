@@ -818,17 +818,33 @@ availabilityTrack.addEventListener("pointercancel", event => {
 availabilityTrack.addEventListener("pointerup", finishAvailabilityDrag);
 availabilityTrack.addEventListener("pointercancel", finishAvailabilityDrag);
 
-//Remove the currently selected timeframe
-removeTimeframeButton.addEventListener("click", () => {
-    if (!selectedAvailabilityDay || selectedTimeframeId === undefined) {
-        return;
+//Delete a timeframe from a given day
+function deleteTimeframe(day, timeframeId) {
+    if (!availability[day] || timeframeId === undefined) {
+        return false;
     }
 
-    availability[selectedAvailabilityDay] = availability[selectedAvailabilityDay]
-        .filter(timeframe => timeframe.id !== selectedTimeframeId);
-    selectedTimeframeId = undefined;
+    const originalCount = availability[day].length;
+    availability[day] = availability[day]
+        .filter(timeframe => timeframe.id !== timeframeId);
+
+    //Stop if no timeframe had the supplied ID
+    if (availability[day].length === originalCount) {
+        return false;
+    }
+
+    if (day === selectedAvailabilityDay && timeframeId === selectedTimeframeId) {
+        selectedTimeframeId = undefined;
+    }
+
     availabilityHelp.textContent = "Timeframe removed.";
     renderAvailability();
+    return true;
+}
+
+//Remove the currently selected timeframe
+removeTimeframeButton.addEventListener("click", () => {
+    deleteTimeframe(selectedAvailabilityDay, selectedTimeframeId);
 });
 
 //Save the current availability and open the popup
