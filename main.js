@@ -396,6 +396,7 @@ let selectedTimeframeId;
 let nextTimeframeId = 1;
 let availabilitySnapshot;
 let activeDrag;
+let activeCreation;
 let suppressTimelineClick = false;
 
 //Keep a value inside a minimum and maximum
@@ -576,7 +577,7 @@ function renderAvailability() {
 function selectAvailabilityDay(day) {
     selectedAvailabilityDay = day;
     selectedTimeframeId = undefined;
-    availabilityHelp.textContent = "Click the timeline to add a one-hour timeframe.";
+    availabilityHelp.textContent = "Click for one hour, or drag to choose a timeframe.";
     renderAvailability();
 }
 
@@ -626,11 +627,25 @@ availabilityTrack.addEventListener("click", event => {
 availabilityTrack.addEventListener("pointerdown", event => {
     const timeframeElement = event.target.closest(".availability-timeframe");
 
-    if (!timeframeElement || event.button !== 0) {
+    if (event.button !== 0) {
         return;
     }
 
     event.preventDefault();
+
+    //Begin creating a timeframe when empty timeline space is pressed
+    if (!timeframeElement) {
+        activeCreation = {
+            pointerId: event.pointerId,
+            anchor: getMinutesFromPointer(event.clientX),
+            timeframe: undefined,
+            hasMoved: false
+        };
+        suppressTimelineClick = true;
+        availabilityTrack.setPointerCapture(event.pointerId);
+        availabilityHelp.textContent = "Drag left or right to choose a timeframe.";
+        return;
+    }
 
     const timeframeId = Number(timeframeElement.dataset.timeframeId);
     const timeframe = availability[selectedAvailabilityDay]
@@ -654,6 +669,45 @@ availabilityTrack.addEventListener("pointerdown", event => {
 
 //Update a timeframe while it is dragged
 availabilityTrack.addEventListener("pointermove", event => {
+    //Create or resize a new timeframe from its original press position
+    if (activeCreation && event.pointerId === activeCreation.pointerId) {
+        const current = getMinutesFromPointer(event.clientX);
+
+        //Wait until the drag covers at least the minimum duration
+        if (Math.abs(current - activeCreation.anchor) < minimumDuration) {
+            return;
+        }
+
+        activeCreation.hasMoved = true;
+
+        const start = Math.min(activeCreation.anchor, current);
+        const end = Math.max(activeCreation.anchor, current);
+        const timeframeId = activeCreation.timeframe?.id;
+
+        if (rangesOverlap(selectedAvailabilityDay, timeframeId, start, end)) {
+            availabilityHelp.textContent = "That timeframe overlaps an existing one.";
+            return;
+        }
+
+        //Create the timeframe on the first movement, then update it in place
+        if (!activeCreation.timeframe) {
+            activeCreation.timeframe = {
+                id: nextTimeframeId++,
+                start,
+                end
+            };
+            availability[selectedAvailabilityDay].push(activeCreation.timeframe);
+            selectedTimeframeId = activeCreation.timeframe.id;
+        } else {
+            activeCreation.timeframe.start = start;
+            activeCreation.timeframe.end = end;
+        }
+
+        availabilityHelp.textContent = `${formatMinutes(start)}–${formatMinutes(end)}`;
+        renderAvailability();
+        return;
+    }
+
     if (!activeDrag || event.pointerId !== activeDrag.pointerId) {
         return;
     }
@@ -694,6 +748,55 @@ availabilityTrack.addEventListener("pointermove", event => {
     syncAvailabilityOutput();
 });
 
+//Finish creating a dragged timeframe or treat a stationary press as a click
+function finishAvailabilityCreation(event, wasCancelled = false) {
+    if (!activeCreation || event.pointerId !== activeCreation.pointerId) {
+        return;
+    }
+
+    const createdTimeframe = activeCreation.timeframe;
+
+    //Remove any partial timeframe if the pointer interaction is cancelled
+    if (wasCancelled) {
+        if (createdTimeframe) {
+            availability[selectedAvailabilityDay] = availability[selectedAvailabilityDay]
+                .filter(timeframe => timeframe.id !== createdTimeframe.id);
+            selectedTimeframeId = undefined;
+        }
+
+        availabilityHelp.textContent = "Timeframe creation cancelled.";
+    } else if (!createdTimeframe && !activeCreation.hasMoved) {
+        //Keep the original one-hour behaviour when the pointer did not move
+        let start = activeCreation.anchor;
+        start = clamp(start, 0, dayLength - defaultDuration);
+        const end = start + defaultDuration;
+
+        if (rangesOverlap(selectedAvailabilityDay, undefined, start, end)) {
+            availabilityHelp.textContent = "That timeframe overlaps an existing one.";
+        } else {
+            const timeframe = {
+                id: nextTimeframeId++,
+                start,
+                end
+            };
+
+            availability[selectedAvailabilityDay].push(timeframe);
+            selectedTimeframeId = timeframe.id;
+            availabilityHelp.textContent = `Added ${formatMinutes(start)}–${formatMinutes(end)}.`;
+        }
+    } else if (createdTimeframe) {
+        availabilityHelp.textContent = `Added ${formatMinutes(createdTimeframe.start)}–${formatMinutes(createdTimeframe.end)}.`;
+    }
+
+    activeCreation = undefined;
+    renderAvailability();
+
+    //Ignore the click event which follows this pointer interaction
+    setTimeout(() => {
+        suppressTimelineClick = false;
+    }, 0);
+}
+
 //Finish a move or resize and redraw its exact values
 function finishAvailabilityDrag(event) {
     if (!activeDrag || event.pointerId !== activeDrag.pointerId) {
@@ -708,6 +811,10 @@ function finishAvailabilityDrag(event) {
 }
 
 //Finish dragging when the pointer is released or cancelled
+availabilityTrack.addEventListener("pointerup", finishAvailabilityCreation);
+availabilityTrack.addEventListener("pointercancel", event => {
+    finishAvailabilityCreation(event, true);
+});
 availabilityTrack.addEventListener("pointerup", finishAvailabilityDrag);
 availabilityTrack.addEventListener("pointercancel", finishAvailabilityDrag);
 
