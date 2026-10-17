@@ -878,3 +878,9 @@ searchTutorsButton.addEventListener("click", () => {
 export function getProfile(){
     return profile;
 }
+
+//Detect a right click and prevent the browser's context menu from opening
+document.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    console.log("right clicked");
+});
