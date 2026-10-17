@@ -667,6 +667,8 @@ availabilityTrack.addEventListener("pointerdown", event => {
     };
 });
 
+
+
 //Update a timeframe while it is dragged
 availabilityTrack.addEventListener("pointermove", event => {
     //Create or resize a new timeframe from its original press position
@@ -897,6 +899,15 @@ export function getProfile(){
 
 //Detect a right click and prevent the browser's context menu from opening
 document.addEventListener("contextmenu", (event) => {
+    const timeframeElement = event.target.closest(".availability-timeframe");
+
+    //Ignore right-clicks on empty timeline space
+    if (!timeframeElement) {
+        return;
+    }
     event.preventDefault();
-    console.log("right clicked");
+    const timeframeId = Number(timeframeElement.dataset.timeframeId);
+    console.log(timeframeId);
+    
+    deleteTimeframe(selectedAvailabilityDay, timeframeId);
 });
