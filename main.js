@@ -906,8 +906,8 @@ document.addEventListener("contextmenu", (event) => {
         return;
     }
     event.preventDefault();
+
+    //Get selected timeframe and delete
     const timeframeId = Number(timeframeElement.dataset.timeframeId);
-    console.log(timeframeId);
-    
     deleteTimeframe(selectedAvailabilityDay, timeframeId);
 });
