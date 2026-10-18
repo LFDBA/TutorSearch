@@ -22,7 +22,6 @@
     object-fit: contain;
 }
 
-/*Compensate for the transparent padding around the generated checklist*/
 .how-it-works-image .how-it-works-image__checklist {
     width: 8.5rem;
     height: 8.5rem;
