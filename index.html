@@ -4,31 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tutor Search</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
 </head>
 <body>
     <main>
-        <div class="how-it-works-images">
-            <div class="how-it-works-image">
-                <img
-                    class="how-it-works-image__checklist"
-                    src="images/how-it-works/checklist.svg"
-                    alt="Checklist"
-                >
-            </div>
-            <div class="how-it-works-image">
-                <img
-                    src="images/how-it-works/user-round-search.svg"
-                    alt="Search for a tutor"
-                >
-            </div>
-            <div class="how-it-works-image">
-                <img
-                    src="images/how-it-works/graduation-cap.svg"
-                    alt="Graduation cap"
-                >
-            </div>
-        </div>
+        <!-- Explain the tutor-search process in three simple steps. -->
+        <section class="how-it-works" aria-labelledby="how-it-works-title">
+            <header class="how-it-works__header">
+                <h1 id="how-it-works-title">How it works</h1>
+                <span class="how-it-works__heading-flourish" aria-hidden="true"></span>
+            </header>
+
+            <ol class="how-it-works__steps">
+                <li class="how-it-works__step how-it-works__step--terracotta">
+                    <span class="how-it-works__number" aria-hidden="true">1</span>
+                    <div class="how-it-works__icon">
+                        <img
+                            class="how-it-works__icon-image how-it-works__icon-image--checklist"
+                            src="images/how-it-works/checklist.svg"
+                            alt=""
+                        >
+                    </div>
+                    <div class="how-it-works__copy">
+                        <h2>Tell us what you need</h2>
+                        <p>Choose your subject, availability and language preferences.</p>
+                    </div>
+                    <svg class="how-it-works__arrow" viewBox="0 0 54 30" aria-hidden="true">
+                        <path d="M2 26C13 8 31 7 47 17"></path>
+                        <path d="m40 9 8 8-9 7"></path>
+                    </svg>
+                </li>
+
+                <li class="how-it-works__step how-it-works__step--sage">
+                    <span class="how-it-works__number" aria-hidden="true">2</span>
+                    <div class="how-it-works__icon">
+                        <img
+                            class="how-it-works__icon-image"
+                            src="images/how-it-works/user-round-search.svg"
+                            alt=""
+                        >
+                    </div>
+                    <div class="how-it-works__copy">
+                        <h2>Compare your matches</h2>
+                        <p>Browse tutors who fit your needs and learn more about them.</p>
+                    </div>
+                    <svg class="how-it-works__arrow" viewBox="0 0 54 30" aria-hidden="true">
+                        <path d="M2 26C13 8 31 7 47 17"></path>
+                        <path d="m40 9 8 8-9 7"></path>
+                    </svg>
+                </li>
+
+                <li class="how-it-works__step how-it-works__step--teal">
+                    <span class="how-it-works__number" aria-hidden="true">3</span>
+                    <div class="how-it-works__icon">
+                        <img
+                            class="how-it-works__icon-image"
+                            src="images/how-it-works/graduation-cap.svg"
+                            alt=""
+                        >
+                    </div>
+                    <div class="how-it-works__copy">
+                        <h2>Start learning</h2>
+                        <p>Get in touch, book a session and reach your goals.</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
     </main>
 </body>
 </html>

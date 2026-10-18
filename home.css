@@ -1,33 +1,219 @@
-.how-it-works-images,
-.how-it-works-image {
+/*Home page colour palette*/
+:root {
+    --page-background: #f3efe7;
+    --card-background: #fbf8f2;
+    --text-colour: #4a403a;
+    --muted-text: #776d65;
+    --border-colour: #d9d0c6;
+    --terracotta: #d3a07f;
+    --sage: #aebda5;
+    --teal: #9fb8b4;
+    --icon-colour: #675149;
+    --soft-shadow: 0 0.65rem 1.5rem rgb(74 64 58 / 9%);
+}
+
+/*Keep sizing predictable throughout the page*/
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
-.how-it-works-images {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+/*Set the page background and default text styles*/
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: var(--page-background);
+    color: var(--text-colour);
+    font-family: "Indie Flower", cursive;
 }
 
-.how-it-works-image {
+/*Match the compact how-it-works strip in the homepage design*/
+.how-it-works {
+    width: min(78rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+}
+
+/*Place the underlined title at the left of the section*/
+.how-it-works__header {
+    position: relative;
+    display: flex;
+    width: fit-content;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.how-it-works__header h1 {
+    margin: 0;
+    border-bottom: 0.14rem solid var(--terracotta);
+    font-size: clamp(1.9rem, 4vw, 2.35rem);
+    font-weight: 400;
+    line-height: 1.05;
+}
+
+/*Add the small sketch marks next to the heading*/
+.how-it-works__heading-flourish,
+.how-it-works__heading-flourish::before {
+    display: block;
+    width: 0.9rem;
+    height: 0.14rem;
+    border-radius: 999px;
+    background: var(--terracotta);
+}
+
+.how-it-works__heading-flourish {
+    margin: 0.35rem 0 0 0.65rem;
+    transform: rotate(-58deg);
+}
+
+.how-it-works__heading-flourish::before {
+    content: "";
+    transform-origin: left center;
+}
+
+.how-it-works__heading-flourish::before {
+    transform: translate(0.1rem, 0.38rem) rotate(32deg);
+}
+
+/*Arrange the three compact process cards in one row*/
+.how-it-works__steps {
     display: grid;
-    width: 8rem;
-    height: 8rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.8rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/*Style each step like the short cards in the reference design*/
+.how-it-works__step {
+    position: relative;
+    display: grid;
+    min-height: 7.2rem;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    align-items: center;
+    padding: 1rem 1.35rem 1rem 0.9rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 0.9rem;
+    background: var(--card-background);
+    box-shadow: var(--soft-shadow);
+}
+
+.how-it-works__step--terracotta {
+    --step-colour: #e6c2aa;
+}
+
+.how-it-works__step--sage {
+    --step-colour: var(--sage);
+}
+
+.how-it-works__step--teal {
+    --step-colour: #bad0cd;
+}
+
+/*Position the coloured number in the card's upper-left corner*/
+.how-it-works__number {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.9rem;
+    display: grid;
+    width: 2.15rem;
+    height: 2.15rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--step-colour);
+    color: var(--text-colour);
+    font-family: system-ui, sans-serif;
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+/*Align each illustration beside its step description*/
+.how-it-works__icon {
+    display: grid;
+    width: 5rem;
+    height: 4.5rem;
+    margin-top: 1.25rem;
     place-items: center;
 }
 
-.how-it-works-image img {
-    width: 6rem;
-    height: 6rem;
+.how-it-works__icon-image {
+    width: 4rem;
+    height: 4rem;
     object-fit: contain;
 }
 
-.how-it-works-image .how-it-works-image__checklist {
-    width: 8.5rem;
-    height: 8.5rem;
+.how-it-works__icon-image--checklist {
+    width: 5.25rem;
+    height: 5.25rem;
     filter:
-        drop-shadow(0.4px 0 0 #675149)
-        drop-shadow(-0.4px 0 0 #675149)
-        drop-shadow(0 0.4px 0 #675149)
-        drop-shadow(0 -0.4px 0 #675149);
+        drop-shadow(0.35px 0 0 var(--icon-colour))
+        drop-shadow(-0.35px 0 0 var(--icon-colour))
+        drop-shadow(0 0.35px 0 var(--icon-colour))
+        drop-shadow(0 -0.35px 0 var(--icon-colour));
+}
+
+/*Keep the handwritten title and regular-font description together*/
+.how-it-works__copy {
+    min-width: 0;
+}
+
+.how-it-works__copy h2 {
+    margin: 0 0 0.25rem;
+    font-size: clamp(1.12rem, 1.7vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.how-it-works__copy p {
+    margin: 0;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.45;
+}
+
+/*Draw the curved arrows between the desktop cards*/
+.how-it-works__arrow {
+    position: absolute;
+    top: 50%;
+    right: -2.55rem;
+    z-index: 1;
+    width: 2.2rem;
+    overflow: visible;
+    fill: none;
+    stroke: #c77f5a;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    transform: translateY(-40%);
+}
+
+/*Stack the cards cleanly when the horizontal layout becomes too narrow*/
+@media (max-width: 54rem) {
+    .how-it-works {
+        width: min(30rem, calc(100% - 2rem));
+    }
+
+    .how-it-works__steps {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .how-it-works__arrow {
+        display: none;
+    }
+}
+
+/*Reduce the card spacing on very small screens*/
+@media (max-width: 25rem) {
+    .how-it-works__step {
+        grid-template-columns: 5.25rem minmax(0, 1fr);
+        padding-right: 1rem;
+    }
+
+    .how-it-works__icon {
+        width: 4.35rem;
+    }
 }
