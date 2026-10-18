@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutor Search</title>
+    <title>Tutor Search | Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
-    <script src="home.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="home.js" type="module"></script>
 </head>
 <body class="ai-images-hidden">
     <button
@@ -46,11 +47,15 @@
                     data-ai-image
                     hidden
                 >
-                <h2 class="slogan">
-                    Same<br>
-                    Goals<br>
-                    Brighter<br>
-                    Futures
+                <h2 class="slogan" aria-label="Same goals. Brighter futures.">
+                    <span class="slogan__line">
+                        <span>Same</span>
+                        <span>Goals.</span>
+                    </span>
+                    <span class="slogan__line slogan__line--accent">
+                        <span>Brighter</span>
+                        <span>Futures.</span>
+                    </span>
                 </h2>
             </div>
         </section>
@@ -144,6 +149,24 @@
                     </div>
                 </li>
             </ol>
+        </section>
+
+        <!--Show the first three tutor profiles currently stored in Supabase. -->
+        <section class="home-tutors" aria-labelledby="home-tutors-title">
+            <header class="home-tutors__header">
+                <div class="section-heading">
+                    <h2 id="home-tutors-title">Meet some of our tutors</h2>
+                    <span class="section-heading__flourish section-heading__flourish--sage" aria-hidden="true"></span>
+                </div>
+
+                <a class="home-tutors__view-all" href="search.html">
+                    View all tutors <span aria-hidden="true">→</span>
+                </a>
+            </header>
+
+            <div id="home-tutor-list" class="home-tutors__grid" aria-live="polite">
+                <p class="home-tutors__status">Loading tutors…</p>
+            </div>
         </section>
 
     </main>

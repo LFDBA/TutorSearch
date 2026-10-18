@@ -35,12 +35,18 @@ export async function addTutorData(tutor) {
 }
 
 
-//Fetch Data func
-export async function fetchTutorData() {
-    //Fetch data and check for error
-    const { data, error: selectError } = await db
+//Fetch Data func, with an optional row limit for smaller page previews
+export async function fetchTutorData(limit) {
+    let query = db
         .from("Tutors")
         .select("*");
+
+    if (Number.isInteger(limit) && limit > 0) {
+        query = query.limit(limit);
+    }
+
+    //Fetch data and check for error
+    const { data, error: selectError } = await query;
 
     if (selectError) {
         console.error("SELECT FAILED:", selectError);
