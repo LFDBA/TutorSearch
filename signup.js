@@ -129,6 +129,8 @@ const emailError = document.querySelector("#email-error");
 const languagesError = document.querySelector("#languages-error");
 const subjectsError = document.querySelector("#subjects-error");
 const availabilityError = document.querySelector("#availability-error");
+const signupSubmitButton = document.querySelector(".signup-submit");
+const signupStatus = document.querySelector("#signup-status");
 const tutorsStorageKey = "tutors";
 const legacyTutorStorageKey = "tutor";
 const maximumProfilePictureSize = 10 * 1024 * 1024;
@@ -192,6 +194,14 @@ function setValidationState(control, messageElement, message = "") {
         messageElement.textContent = message;
         messageElement.hidden = !hasError;
     }
+}
+
+//Show the result of the tutor creation request beneath the submit button
+function setSignupStatus(message = "", type = "") {
+    signupStatus.textContent = message;
+    signupStatus.classList.toggle("is-success", type === "success");
+    signupStatus.classList.toggle("is-error", type === "error");
+    signupStatus.hidden = message.length === 0;
 }
 
 //Check the basic shape of an email address
@@ -1119,9 +1129,10 @@ availabilityDialog.addEventListener("close", () => {
 //Set the initial hidden value and summary
 syncAvailabilityOutput();
 
-//Validate the signup form, then store and log the tutor without uploading it
+//Validate the signup form, save the tutor, and report the result
 signupForm.addEventListener("submit", async event => {
     event.preventDefault();
+    setSignupStatus();
 
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
@@ -1205,12 +1216,31 @@ signupForm.addEventListener("submit", async event => {
         subjects,
         availability: selectedAvailability
     };
-    const tutors = getStoredTutors();
-    addTutorData(tutor);
-    tutors.push(tutor);
-    localStorage.setItem(tutorsStorageKey, JSON.stringify(tutors));
-    localStorage.removeItem(legacyTutorStorageKey);
-    console.log("Tutor created:", tutor);
+
+    signupSubmitButton.disabled = true;
+    signupSubmitButton.textContent = "Creating tutor...";
+
+    try {
+        const tutorWasAdded = await addTutorData(tutor);
+
+        if (!tutorWasAdded) {
+            setSignupStatus("The tutor could not be added. Please try again.", "error");
+            return;
+        }
+
+        const tutors = getStoredTutors();
+        tutors.push(tutor);
+        localStorage.setItem(tutorsStorageKey, JSON.stringify(tutors));
+        localStorage.removeItem(legacyTutorStorageKey);
+        console.log("Tutor created:", tutor);
+        setSignupStatus(`${name}'s tutor profile was added successfully.`, "success");
+    } catch (error) {
+        console.error("Tutor creation failed:", error);
+        setSignupStatus("The tutor could not be added. Please try again.", "error");
+    } finally {
+        signupSubmitButton.disabled = false;
+        signupSubmitButton.textContent = "Create tutor";
+    }
 });
 
 //Detect a right click and prevent the browser's context menu from opening

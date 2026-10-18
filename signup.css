@@ -323,6 +323,39 @@ body {
     outline-offset: 2px;
 }
 
+.signup-submit:disabled {
+    cursor: wait;
+    opacity: 0.65;
+    transform: none;
+}
+
+/*Confirm whether the tutor was added after the database request finishes.*/
+.signup-status {
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 0.8rem;
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.signup-status[hidden] {
+    display: none;
+}
+
+.signup-status.is-success {
+    border-color: #91a786;
+    background: rgb(174 189 165 / 30%);
+    color: #465740;
+}
+
+.signup-status.is-error {
+    border-color: var(--error-colour);
+    background: rgb(152 72 63 / 9%);
+    color: var(--error-colour);
+}
+
 /*Stack selection panels on small screens*/
 @media (max-width: 34rem) {
     .signup-page {

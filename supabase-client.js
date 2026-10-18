@@ -28,10 +28,11 @@ export async function addTutorData(tutor) {
 
     if (insertError) {
         console.error("INSERT FAILED:", insertError);
-        return;
+        return false;
     }
 
     console.log("Inserted!");
+    return true;
 }
 
 
