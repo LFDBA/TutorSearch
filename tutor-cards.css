@@ -43,11 +43,31 @@ body {
     align-items: center;
 }
 
+.tutor-card-identity {
+    min-width: 0;
+}
+
 .tutor-card h2,
 .tutor-card h3 {
     margin: 0;
     font-family: "Indie Flower", cursive;
     font-weight: 400;
+}
+
+/*Show the tutor's contact address beneath their name.*/
+.tutor-email {
+    display: inline-block;
+    margin-top: 0.15rem;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+a.tutor-email:hover,
+a.tutor-email:focus-visible {
+    color: var(--terracotta);
+    text-decoration: underline;
 }
 
 .tutor-card h2 {

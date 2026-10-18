@@ -1,8 +1,13 @@
 import { fetchTutorData } from './supabase-client.js';
 import { getProfile } from './main.js';
+import { createTutorCard } from './tutor-card.js';
 
 
 const searchTutorsButton = document.querySelector("#search-tutors");
+const searchResults = document.querySelector("#search-results");
+const searchResultsTitle = document.querySelector("#search-results-title");
+const searchResultsSummary = document.querySelector("#search-results-summary");
+const tutorResults = document.querySelector("#tutor-results");
 
 const tutors = await fetchTutorData();
 
@@ -326,15 +331,44 @@ function searchForMatch(tutorList, profile) {
     };
 }
 
+//Render the ranked database records with the reusable tutor card design
+function displayMatches(matches, isAvailabilityFallback = false) {
+    tutorResults.replaceChildren();
+    searchResults.hidden = false;
+
+    if (matches.length === 0) {
+        searchResultsTitle.textContent = "No tutor matches";
+        searchResultsSummary.textContent = "Try changing your subjects, availability, or languages.";
+        searchResults.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+    }
+
+    searchResultsTitle.textContent = isAvailabilityFallback
+        ? "Closest availability matches"
+        : "Tutor matches";
+    searchResultsSummary.textContent = isAvailabilityFallback
+        ? "No tutors directly match your availability. These tutors are ordered by the closest available times."
+        : `${matches.length} ${matches.length === 1 ? "tutor" : "tutors"} found, ordered by best match.`;
+
+    for (const match of matches) {
+        tutorResults.append(createTutorCard(match.tutor));
+    }
+
+    searchResults.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 searchTutorsButton.addEventListener("click", () => {
     const profile = getProfile();
     const { directMatches, availabilitySuggestions } = searchForMatch(tutors, profile);
 
     if (directMatches.length > 0) {
         console.log("Tutor matches:", directMatches);
+        displayMatches(directMatches);
     } else if (availabilitySuggestions.length > 0) {
         console.log("no direct matches: consider", availabilitySuggestions);
+        displayMatches(availabilitySuggestions, true);
     } else {
         console.log("No matching tutors found.");
+        displayMatches([]);
     }
 });

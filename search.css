@@ -21,14 +21,15 @@ body {
 
 /*Centre the visible search page*/
 .search-page {
-    width: min(44rem, calc(100% - 2rem));
+    width: min(76rem, calc(100% - 2rem));
     margin: 0 auto;
     padding: 3.5rem 0;
 }
 
 /*Style the search heading*/
 .search-header {
-    margin-bottom: 1.75rem;
+    width: min(44rem, 100%);
+    margin: 0 auto 1.75rem;
     color: var(--text-colour);
     text-align: center;
     font-family: "Indie Flower", cursive;
@@ -58,7 +59,48 @@ body {
 /*Space the visible search filters*/
 .search-filters {
     display: grid;
+    width: min(44rem, 100%);
     gap: 1.25rem;
+    margin: 0 auto;
+}
+
+/*Present search matches in their calculated ranking order.*/
+.search-results {
+    margin-top: 3rem;
+    scroll-margin-top: 1.5rem;
+}
+
+.search-results[hidden] {
+    display: none;
+}
+
+.search-results__header {
+    margin-bottom: 1.25rem;
+    color: var(--text-colour);
+    text-align: center;
+}
+
+.search-results__header h2 {
+    margin: 0;
+    font-family: "Indie Flower", cursive;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 400;
+}
+
+.search-results__header p {
+    max-width: 38rem;
+    margin: 0.35rem auto 0;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.search-results__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: 1.25rem;
+    align-items: start;
 }
 
 /*Create the main search card*/

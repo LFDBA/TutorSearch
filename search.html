@@ -20,6 +20,7 @@
         >
 
         <!--Search page styles-->
+        <link rel="stylesheet" href="tutor-cards.css">
         <link rel="stylesheet" href="search.css">
         <link rel="stylesheet" href="navbar.css">
 
@@ -173,6 +174,16 @@
                     Search tutors
                 </button>
             </div>
+
+            <!--Display ranked tutor cards after a search is completed-->
+            <section id="search-results" class="search-results" aria-labelledby="search-results-title" hidden>
+                <header class="search-results__header">
+                    <h2 id="search-results-title">Tutor matches</h2>
+                    <p id="search-results-summary" aria-live="polite"></p>
+                </header>
+
+                <div id="tutor-results" class="search-results__grid"></div>
+            </section>
         </main>
     </body>
 </html>
