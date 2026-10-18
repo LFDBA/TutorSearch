@@ -1,4 +1,5 @@
 import { fetchTutorData } from "./supabase-client.js";
+import { makeTutorCardClickable } from "./tutor-card.js";
 
 //Find the AI-image switch and every image identified as AI-generated
 const aiImageToggle = document.querySelector(".ai-image-toggle");
@@ -198,7 +199,7 @@ function createHomepageTutorCard(tutor) {
     );
 
     card.append(createTutorAvatar(tutor), content);
-    return card;
+    return makeTutorCardClickable(card, tutor);
 }
 
 //Fetch and display only the first three tutor records on the home page

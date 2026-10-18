@@ -604,6 +604,22 @@ main {
     box-shadow: var(--soft-shadow);
 }
 
+/*Show that each homepage preview opens the tutor's full profile*/
+.home-tutor-card.is-clickable {
+    cursor: pointer;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.home-tutor-card.is-clickable:hover {
+    box-shadow: 0 0.85rem 1.7rem rgb(74 64 58 / 16%);
+    transform: translateY(-0.15rem);
+}
+
+.home-tutor-card.is-clickable:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 0.25rem;
+}
+
 .home-tutor-card__avatar {
     display: grid;
     width: 5.25rem;

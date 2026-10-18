@@ -130,14 +130,67 @@ function createAvailabilityDetails(tutor) {
     return details;
 }
 
+//Create a stable link to one tutor, preferring the database ID over their email
+export function getTutorPageUrl(tutor) {
+    const tutorId = tutor.id ?? tutor.tutor_id ?? tutor.uuid;
+    const tutorEmail = String(tutor.email ?? "").trim();
+    const searchParameters = new URLSearchParams();
+
+    if (tutorId !== undefined && tutorId !== null && String(tutorId).trim()) {
+        searchParameters.set("id", String(tutorId));
+    } else if (tutorEmail) {
+        searchParameters.set("email", tutorEmail);
+    } else {
+        return "";
+    }
+
+    return `tutor.html?${searchParameters.toString()}`;
+}
+
+//Make a tutor card open its full profile without hijacking its own controls
+export function makeTutorCardClickable(card, tutor) {
+    const tutorPageUrl = getTutorPageUrl(tutor);
+
+    if (!tutorPageUrl) {
+        return card;
+    }
+
+    const tutorName = String(tutor.name ?? "Tutor").trim() || "Tutor";
+    const openTutorPage = () => {
+        window.location.assign(tutorPageUrl);
+    };
+
+    card.classList.add("is-clickable");
+    card.tabIndex = 0;
+    card.setAttribute("role", "link");
+    card.setAttribute("aria-label", `View ${tutorName}'s tutor profile`);
+
+    card.addEventListener("click", (event) => {
+        if (event.target.closest("a, button, input, select, textarea, summary, details, .tutor-email")) {
+            return;
+        }
+
+        openTutorPage();
+    });
+
+    card.addEventListener("keydown", (event) => {
+        if (event.target === card && event.key === "Enter") {
+            event.preventDefault();
+            openTutorPage();
+        }
+    });
+
+    return card;
+}
+
 //Build one reusable tutor card from a database record
-export function createTutorCard(tutor) {
+export function createTutorCard(tutor, { clickable = true } = {}) {
     const card = document.createElement("article");
     const header = document.createElement("header");
     const identity = document.createElement("div");
     const name = document.createElement("h2");
     const tutorEmail = String(tutor.email ?? "").trim();
-    const email = document.createElement(tutorEmail ? "a" : "span");
+    const email = document.createElement("span");
 
     card.className = "tutor-card";
     header.className = "tutor-card-header";
@@ -145,10 +198,6 @@ export function createTutorCard(tutor) {
     name.textContent = String(tutor.name ?? "Tutor").trim() || "Tutor";
     email.className = "tutor-email";
     email.textContent = tutorEmail || "No email listed";
-
-    if (tutorEmail) {
-        email.href = `mailto:${tutorEmail}`;
-    }
 
     identity.append(name, email);
     header.append(createTutorAvatar(tutor), identity);
@@ -158,5 +207,5 @@ export function createTutorCard(tutor) {
         createAvailabilityDetails(tutor)
     );
 
-    return card;
+    return clickable ? makeTutorCardClickable(card, tutor) : card;
 }

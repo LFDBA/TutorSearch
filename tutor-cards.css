@@ -36,6 +36,22 @@ body {
     box-shadow: 0 0.75rem 1.8rem rgb(74 64 58 / 12%);
 }
 
+/*Show when the card itself links to the tutor's full profile*/
+.tutor-card.is-clickable {
+    cursor: pointer;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.tutor-card.is-clickable:hover {
+    box-shadow: 0 1rem 2.1rem rgb(74 64 58 / 17%);
+    transform: translateY(-0.15rem);
+}
+
+.tutor-card.is-clickable:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 0.25rem;
+}
+
 /*Place the tutor picture beside their name*/
 .tutor-card-header {
     display: flex;
@@ -62,12 +78,6 @@ body {
     font-family: system-ui, sans-serif;
     font-size: 0.8rem;
     overflow-wrap: anywhere;
-}
-
-a.tutor-email:hover,
-a.tutor-email:focus-visible {
-    color: var(--terracotta);
-    text-decoration: underline;
 }
 
 .tutor-card h2 {

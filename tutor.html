@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="View a Tutor Search tutor profile.">
+    <title>Tutor Search | Tutor profile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="tutor-cards.css">
+    <link rel="stylesheet" href="tutor-details.css">
+    <link rel="stylesheet" href="navbar.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="tutor-details.js" type="module"></script>
+</head>
+<body>
+    <nav class="site-nav" aria-label="Main navigation">
+        <a class="site-nav__brand" href="index.html">Tutor Search</a>
+
+        <div class="site-nav__links">
+            <a class="site-nav__link" href="index.html">Home</a>
+            <a class="site-nav__link" href="search.html">Find a tutor</a>
+            <a class="site-nav__link site-nav__link--cta" href="signup.html">Become a tutor</a>
+            <a class="site-nav__link" href="ai.html">AI Usage</a>
+        </div>
+    </nav>
+
+    <main class="tutor-profile-page">
+        <a class="tutor-profile-page__back" href="search.html">&larr; Back to tutor search</a>
+
+        <header class="tutor-profile-page__header">
+            <h1 id="tutor-profile-title">Tutor profile</h1>
+        </header>
+
+        <p id="tutor-profile-status" class="tutor-profile-page__status" role="status">
+            Loading tutor&hellip;
+        </p>
+        <div id="tutor-profile-card" class="tutor-profile-page__card"></div>
+    </main>
+</body>
+</html>

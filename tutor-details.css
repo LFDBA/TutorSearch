@@ -1,0 +1,42 @@
+/*Keep the full profile focused and consistent with the rest of Tutor Search*/
+.tutor-profile-page {
+    box-sizing: border-box;
+    width: min(34rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) 0;
+}
+
+.tutor-profile-page__back {
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.tutor-profile-page__back:hover,
+.tutor-profile-page__back:focus-visible {
+    color: var(--terracotta);
+    text-decoration: underline;
+}
+
+.tutor-profile-page__header h1 {
+    margin: 1.25rem 0;
+    font-family: "Indie Flower", cursive;
+    font-size: clamp(2.25rem, 8vw, 3.25rem);
+    font-weight: 400;
+    line-height: 1;
+}
+
+.tutor-profile-page__status {
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+}
+
+.tutor-profile-page__status:empty {
+    display: none;
+}
+
+.tutor-profile-page__card {
+    margin-top: 1rem;
+}
