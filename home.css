@@ -553,6 +553,7 @@ main {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.25rem;
+    align-items: start;
 }
 
 .home-tutors__status {
@@ -567,6 +568,7 @@ main {
 .home-tutor-card {
     display: grid;
     min-width: 0;
+    min-height: 11.5rem;
     grid-template-columns: 5.25rem minmax(0, 1fr);
     gap: 1rem;
     align-items: start;
