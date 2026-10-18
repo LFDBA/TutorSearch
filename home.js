@@ -4,7 +4,7 @@ const aiImages = document.querySelectorAll("[data-ai-image]");
 
 //Keep the visitor's AI-image preference between page visits
 const savedAiImagePreference = localStorage.getItem("showAiImages");
-let showAiImages = savedAiImagePreference !== "false";
+let showAiImages = savedAiImagePreference === "true";
 
 //Show or hide AI images and keep the switch text accessible
 function updateAiImages() {

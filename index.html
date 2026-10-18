@@ -10,18 +10,18 @@
     <link rel="stylesheet" href="home.css">
     <script src="home.js" defer></script>
 </head>
-<body>
+<body class="ai-images-hidden">
     <button
         class="ai-image-toggle"
         type="button"
         role="switch"
-        aria-checked="true"
-        aria-label="Hide AI images"
+        aria-checked="false"
+        aria-label="Show AI images"
     >
         <span class="ai-image-toggle__track" aria-hidden="true">
             <span class="ai-image-toggle__thumb"></span>
         </span>
-        <span>AI images: <span class="ai-image-toggle__state">on</span></span>
+        <span>AI images: <span class="ai-image-toggle__state">off</span></span>
     </button>
 
     <main>
@@ -44,6 +44,7 @@
                     src="images/homepage/AI/students-studying-hero-clean.png"
                     alt="Two students smiling and studying together with books and a laptop"
                     data-ai-image
+                    hidden
                 >
                 <h2 class="slogan">
                     Same<br>
