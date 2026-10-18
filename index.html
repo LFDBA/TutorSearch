@@ -8,14 +8,85 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
+    <script src="home.js" defer></script>
 </head>
 <body>
+    <button
+        class="ai-image-toggle"
+        type="button"
+        role="switch"
+        aria-checked="true"
+        aria-label="Hide AI images"
+    >
+        <span class="ai-image-toggle__track" aria-hidden="true">
+            <span class="ai-image-toggle__thumb"></span>
+        </span>
+        <span>AI images: <span class="ai-image-toggle__state">on</span></span>
+    </button>
+
     <main>
+        <!-- Introduce the site beside the clean tutoring illustration. -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="hero__copy">
+                <h1 id="hero-title">Find the tutor<br>who fits you</h1>
+                <p>Connect with friendly tutors across New Zealand for personalised support in your high school subjects.</p>
+
+                <div class="hero__actions">
+                    <a class="button button--primary" href="search.html">
+                        Find a tutor <span aria-hidden="true">→</span>
+                    </a>
+                    <a class="button button--secondary" href="signup.html">Become a tutor</a>
+                </div>
+            </div>
+
+            <div class="hero__visual">
+                <img
+                    src="images/homepage/AI/students-studying-hero-clean.png"
+                    alt="Two students smiling and studying together with books and a laptop"
+                    data-ai-image
+                >
+                <h2 class="slogan">
+                    Same<br>
+                    Goals<br>
+                    Brighter<br>
+                    Futures
+                </h2>
+            </div>
+        </section>
+
+        <!-- Offer a lightweight route into the full tutor search page. -->
+        <form class="quick-search" action="search.html" method="get">
+            <div class="quick-search__field">
+                <span>Subject</span>
+                <span class="quick-search__control quick-search__control--terracotta">
+                    Choose a subject
+                </span>
+            </div>
+
+            <div class="quick-search__field">
+                <span>Availability</span>
+                <span class="quick-search__control quick-search__control--sage">
+                    Any time
+                </span>
+            </div>
+
+            <div class="quick-search__field">
+                <span>Language</span>
+                <span class="quick-search__control quick-search__control--teal">
+                    Any language
+                </span>
+            </div>
+
+            <button class="quick-search__submit" type="submit">
+                Search tutors <span aria-hidden="true">→</span>
+            </button>
+        </form>
+
         <!-- Explain the tutor-search process in three simple steps. -->
         <section class="how-it-works" aria-labelledby="how-it-works-title">
-            <header class="how-it-works__header">
-                <h1 id="how-it-works-title">How it works</h1>
-                <span class="how-it-works__heading-flourish" aria-hidden="true"></span>
+            <header class="section-heading">
+                <h2 id="how-it-works-title">How it works</h2>
+                <span class="section-heading__flourish section-heading__flourish--terracotta" aria-hidden="true"></span>
             </header>
 
             <ol class="how-it-works__steps">
@@ -29,7 +100,7 @@
                         >
                     </div>
                     <div class="how-it-works__copy">
-                        <h2>Tell us what you need</h2>
+                        <h3>Tell us what you need</h3>
                         <p>Choose your subject, availability and language preferences.</p>
                     </div>
                     <svg class="how-it-works__arrow" viewBox="0 0 54 30" aria-hidden="true">
@@ -48,7 +119,7 @@
                         >
                     </div>
                     <div class="how-it-works__copy">
-                        <h2>Compare your matches</h2>
+                        <h3>Compare your matches</h3>
                         <p>Browse tutors who fit your needs and learn more about them.</p>
                     </div>
                     <svg class="how-it-works__arrow" viewBox="0 0 54 30" aria-hidden="true">
@@ -67,12 +138,13 @@
                         >
                     </div>
                     <div class="how-it-works__copy">
-                        <h2>Start learning</h2>
+                        <h3>Start learning</h3>
                         <p>Get in touch, book a session and reach your goals.</p>
                     </div>
                 </li>
             </ol>
         </section>
+
     </main>
 </body>
 </html>

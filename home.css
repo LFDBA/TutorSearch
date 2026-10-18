@@ -1,15 +1,18 @@
 /*Home page colour palette*/
 :root {
-    --page-background: #f3efe7;
+    --page-background: #f9f6f0;
     --card-background: #fbf8f2;
     --text-colour: #4a403a;
     --muted-text: #776d65;
     --border-colour: #d9d0c6;
-    --terracotta: #d3a07f;
+    --terracotta: #d09670;
+    --soft-terracotta: #efd8c8;
     --sage: #aebda5;
+    --soft-sage: #dce5d7;
     --teal: #9fb8b4;
+    --soft-teal: #d6e3e1;
     --icon-colour: #675149;
-    --soft-shadow: 0 0.65rem 1.5rem rgb(74 64 58 / 9%);
+    --soft-shadow: 0 0.7rem 1.65rem rgb(74 64 58 / 10%);
 }
 
 /*Keep sizing predictable throughout the page*/
@@ -19,64 +22,327 @@
     box-sizing: border-box;
 }
 
-/*Set the page background and default text styles*/
+html {
+    scroll-behavior: smooth;
+}
+
+/*Set the shared page and text styles*/
 body {
+    min-width: 18rem;
     min-height: 100vh;
     margin: 0;
+    overflow-x: hidden;
     background: var(--page-background);
     color: var(--text-colour);
     font-family: "Indie Flower", cursive;
 }
 
-/*Match the compact how-it-works strip in the homepage design*/
-.how-it-works {
-    width: min(78rem, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: clamp(2.5rem, 6vw, 4.5rem) 0;
+button {
+    color: inherit;
+    font: inherit;
 }
 
-/*Place the underlined title at the left of the section*/
-.how-it-works__header {
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+main {
+    overflow: hidden;
+}
+
+/*Keep the AI-image preference available in the top-left corner*/
+.ai-image-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--border-colour);
+    border-radius: 999px;
+    background: rgb(251 248 242 / 94%);
+    box-shadow: 0 0.25rem 0.8rem rgb(74 64 58 / 9%);
+    font-family: system-ui, sans-serif;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.ai-image-toggle__track {
+    position: relative;
+    width: 2rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    background: var(--sage);
+    transition: background 160ms ease;
+}
+
+.ai-image-toggle__thumb {
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background: #fffaf5;
+    box-shadow: 0 0.08rem 0.2rem rgb(74 64 58 / 25%);
+    transform: translateX(0.9rem);
+    transition: transform 160ms ease;
+}
+
+.ai-image-toggle[aria-checked="false"] .ai-image-toggle__track {
+    background: #b9b2ab;
+}
+
+.ai-image-toggle[aria-checked="false"] .ai-image-toggle__thumb {
+    transform: translateX(0);
+}
+
+.ai-image-toggle:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 2px;
+}
+
+/*Place the hero message beside the generated illustration*/
+.hero {
+    display: grid;
+    width: min(80rem, calc(100% - 2rem));
+    min-height: 18.5rem;
+    grid-template-columns: minmax(20rem, 0.76fr) minmax(32rem, 1.24fr);
+    align-items: center;
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 1.2rem 1.5rem 0;
+}
+
+.hero__copy {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+
+.hero__copy h1 {
+    margin: 0;
+    font-size: clamp(3rem, 5vw, 4.2rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+}
+
+.hero__copy > p {
+    max-width: 28rem;
+    margin: 1.2rem 0 1.25rem;
+    color: var(--muted-text);
+    font-family: system-ui, sans-serif;
+    font-size: 0.98rem;
+    line-height: 1.45;
+}
+
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.button {
+    display: inline-flex;
+    min-width: 10.5rem;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 0.6rem 1.4rem;
+    border: 1px solid var(--terracotta);
+    border-radius: 999px;
+    font-size: 1.15rem;
+}
+
+.button--primary {
+    background: var(--terracotta);
+    color: #fffaf5;
+}
+
+.button--secondary {
+    background: rgb(251 248 242 / 72%);
+}
+
+.button:hover,
+.quick-search__submit:hover {
+    filter: brightness(0.97);
+    transform: translateY(-1px);
+}
+
+.hero__visual {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    align-items: flex-end;
+    align-self: end;
+}
+
+.hero__visual img {
+    display: block;
+    width: 112%;
+    max-width: none;
+    margin-left: -5%;
+    object-fit: contain;
+}
+
+/*Angle and size the short slogan like the handwritten reference*/
+.slogan {
+    position: absolute;
+    top: 1.7rem;
+    right: -8rem;
+    width: 8rem;
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 1.7rem;
+    font-weight: 400;
+    line-height: 1.02;
+    text-align: center;
+    transform: rotate(-7deg) scale(0.9);
+    transform-origin: center;
+}
+
+/*Collapse the illustration space when AI images are switched off*/
+.ai-images-hidden .hero {
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: 2rem;
+}
+
+.ai-images-hidden .hero__copy {
+    max-width: 32rem;
+}
+
+.ai-images-hidden .hero__visual {
+    display: none;
+}
+
+.ai-images-hidden .quick-search {
+    margin-top: 0;
+}
+
+/*Style the quick-search panel below the hero*/
+.quick-search {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    width: min(78rem, calc(100% - 2rem));
+    grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(11rem, 0.86fr);
+    gap: 1.3rem;
+    align-items: end;
+    margin: -1.65rem auto 0;
+    padding: 1.35rem 2rem 1.55rem;
+    border: 1px solid rgb(217 208 198 / 72%);
+    border-radius: 1rem;
+    background: rgb(251 248 242 / 96%);
+    box-shadow: var(--soft-shadow);
+}
+
+.quick-search__field {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+    font-size: 1.1rem;
+}
+
+.quick-search__control {
+    display: flex;
+    min-width: 0;
+    min-height: 3rem;
+    align-items: center;
+    padding: 0.65rem 1rem;
+    border-radius: 0.7rem;
+    font-family: system-ui, sans-serif;
+    font-size: 0.87rem;
+}
+
+.quick-search__control--terracotta {
+    background: var(--soft-terracotta);
+}
+
+.quick-search__control--sage {
+    background: var(--soft-sage);
+}
+
+.quick-search__control--teal {
+    background: var(--soft-teal);
+}
+
+.quick-search__submit {
+    min-height: 3.6rem;
+    border: 0;
+    border-radius: 0.8rem;
+    background: var(--terracotta);
+    box-shadow: 0 0.55rem 1rem rgb(208 150 112 / 22%);
+    color: #fffaf5;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.quick-search__submit span {
+    margin-left: 0.7rem;
+}
+
+/*Share the hand-drawn heading treatment between lower sections*/
+.section-heading {
     position: relative;
     display: flex;
     width: fit-content;
     align-items: flex-start;
-    margin-bottom: 1.25rem;
 }
 
-.how-it-works__header h1 {
+.section-heading h2 {
     margin: 0;
     border-bottom: 0.14rem solid var(--terracotta);
-    font-size: clamp(1.9rem, 4vw, 2.35rem);
+    font-size: clamp(1.9rem, 4vw, 2.3rem);
     font-weight: 400;
     line-height: 1.05;
 }
 
-/*Add the small sketch marks next to the heading*/
-.how-it-works__heading-flourish,
-.how-it-works__heading-flourish::before {
+.section-heading__flourish,
+.section-heading__flourish::before {
     display: block;
     width: 0.9rem;
     height: 0.14rem;
     border-radius: 999px;
-    background: var(--terracotta);
 }
 
-.how-it-works__heading-flourish {
+.section-heading__flourish {
     margin: 0.35rem 0 0 0.65rem;
     transform: rotate(-58deg);
 }
 
-.how-it-works__heading-flourish::before {
+.section-heading__flourish::before {
     content: "";
+    background: inherit;
+    transform: translate(0.1rem, 0.38rem) rotate(32deg);
     transform-origin: left center;
 }
 
-.how-it-works__heading-flourish::before {
-    transform: translate(0.1rem, 0.38rem) rotate(32deg);
+.section-heading__flourish--terracotta {
+    background: var(--terracotta);
 }
 
-/*Arrange the three compact process cards in one row*/
+.section-heading__flourish--sage {
+    background: var(--sage);
+}
+
+/*Match the compact how-it-works strip in the reference*/
+.how-it-works {
+    width: min(78rem, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1.75rem 0 1.35rem;
+}
+
+.how-it-works .section-heading {
+    margin-bottom: 1rem;
+}
+
 .how-it-works__steps {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -86,11 +352,10 @@ body {
     list-style: none;
 }
 
-/*Style each step like the short cards in the reference design*/
 .how-it-works__step {
     position: relative;
     display: grid;
-    min-height: 7.2rem;
+    min-height: 7.1rem;
     grid-template-columns: 6rem minmax(0, 1fr);
     align-items: center;
     padding: 1rem 1.35rem 1rem 0.9rem;
@@ -112,29 +377,25 @@ body {
     --step-colour: #bad0cd;
 }
 
-/*Position the coloured number in the card's upper-left corner*/
 .how-it-works__number {
     position: absolute;
-    top: 0.7rem;
+    top: 0.65rem;
     left: 0.9rem;
     display: grid;
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 2.1rem;
+    height: 2.1rem;
     place-items: center;
     border-radius: 50%;
     background: var(--step-colour);
-    color: var(--text-colour);
     font-family: system-ui, sans-serif;
-    font-size: 0.95rem;
-    line-height: 1;
+    font-size: 0.9rem;
 }
 
-/*Align each illustration beside its step description*/
 .how-it-works__icon {
     display: grid;
     width: 5rem;
     height: 4.5rem;
-    margin-top: 1.25rem;
+    margin-top: 1.2rem;
     place-items: center;
 }
 
@@ -154,14 +415,13 @@ body {
         drop-shadow(0 -0.35px 0 var(--icon-colour));
 }
 
-/*Keep the handwritten title and regular-font description together*/
 .how-it-works__copy {
     min-width: 0;
 }
 
-.how-it-works__copy h2 {
+.how-it-works__copy h3 {
     margin: 0 0 0.25rem;
-    font-size: clamp(1.12rem, 1.7vw, 1.35rem);
+    font-size: clamp(1.05rem, 1.6vw, 1.28rem);
     font-weight: 400;
     line-height: 1.15;
 }
@@ -170,11 +430,10 @@ body {
     margin: 0;
     color: var(--muted-text);
     font-family: system-ui, sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     line-height: 1.45;
 }
 
-/*Draw the curved arrows between the desktop cards*/
 .how-it-works__arrow {
     position: absolute;
     top: 50%;
@@ -190,30 +449,114 @@ body {
     transform: translateY(-40%);
 }
 
-/*Stack the cards cleanly when the horizontal layout becomes too narrow*/
-@media (max-width: 54rem) {
-    .how-it-works {
-        width: min(30rem, calc(100% - 2rem));
+/*Reflow the page for tablets*/
+@media (max-width: 62rem) {
+    .hero {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        padding-top: 2.5rem;
+        text-align: center;
+    }
+
+    .hero__copy > p {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .hero__actions {
+        justify-content: center;
+    }
+
+    .hero__visual img {
+        width: 100%;
+        margin: 0;
+    }
+
+    .slogan {
+        top: 1rem;
+        right: 0;
+        transform: rotate(-7deg) scale(0.82);
+    }
+
+    .quick-search {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 0;
     }
 
     .how-it-works__steps {
         grid-template-columns: 1fr;
+    }
+
+    .how-it-works {
+        width: min(32rem, calc(100% - 2rem));
+    }
+
+    .how-it-works__steps {
         gap: 1rem;
     }
 
     .how-it-works__arrow {
         display: none;
     }
+
 }
 
-/*Reduce the card spacing on very small screens*/
+/*Simplify the hero and search controls on phones*/
+@media (max-width: 42rem) {
+    .hero {
+        width: min(34rem, calc(100% - 1rem));
+        padding-top: 4.5rem;
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .hero__copy h1 {
+        font-size: clamp(2.3rem, 11vw, 3rem);
+        line-height: 0.98;
+    }
+
+    .hero__copy > p {
+        max-width: 20.5rem;
+        font-size: 0.88rem;
+    }
+
+    .slogan {
+        top: 0.25rem;
+        right: -0.2rem;
+        font-size: 1.25rem;
+        transform: rotate(-7deg) scale(0.78);
+    }
+
+    .hero__actions {
+        display: grid;
+        width: min(19rem, 100%);
+        margin: 0 auto;
+    }
+
+    .hero__actions .button {
+        width: 100%;
+    }
+
+    .quick-search {
+        grid-template-columns: 1fr;
+        padding: 1.25rem;
+    }
+
+}
+
+/*Keep narrow cards readable on very small phones*/
 @media (max-width: 25rem) {
+    .button {
+        width: 100%;
+    }
+
     .how-it-works__step {
-        grid-template-columns: 5.25rem minmax(0, 1fr);
+        grid-template-columns: 5.2rem minmax(0, 1fr);
         padding-right: 1rem;
     }
 
     .how-it-works__icon {
-        width: 4.35rem;
+        width: 4.3rem;
     }
+
 }
