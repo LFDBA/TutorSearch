@@ -1,0 +1,34 @@
+.how-it-works-images,
+.how-it-works-image {
+    box-sizing: border-box;
+}
+
+.how-it-works-images {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.how-it-works-image {
+    display: grid;
+    width: 8rem;
+    height: 8rem;
+    place-items: center;
+}
+
+.how-it-works-image img {
+    width: 6rem;
+    height: 6rem;
+    object-fit: contain;
+}
+
+/*Compensate for the transparent padding around the generated checklist*/
+.how-it-works-image .how-it-works-image__checklist {
+    width: 8.5rem;
+    height: 8.5rem;
+    filter:
+        drop-shadow(0.4px 0 0 #675149)
+        drop-shadow(-0.4px 0 0 #675149)
+        drop-shadow(0 0.4px 0 #675149)
+        drop-shadow(0 -0.4px 0 #675149);
+}
