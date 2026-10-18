@@ -324,10 +324,35 @@ main {
     min-width: 0;
     min-height: 3rem;
     align-items: center;
+    gap: 0.7rem;
     padding: 0.65rem 1rem;
     border-radius: 0.7rem;
     font-family: system-ui, sans-serif;
     font-size: 0.87rem;
+}
+
+/*Size the Lucide icons consistently inside the three quick-search controls.*/
+.quick-search__icon {
+    flex: 0 0 auto;
+    width: 1.45rem;
+    height: 1.45rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.quick-search__control--terracotta .quick-search__icon {
+    color: #ad6f4a;
+}
+
+.quick-search__control--sage .quick-search__icon {
+    color: #66745f;
+}
+
+.quick-search__control--teal .quick-search__icon {
+    color: #5f7975;
 }
 
 .quick-search__control--terracotta {
