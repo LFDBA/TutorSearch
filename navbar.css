@@ -1,0 +1,77 @@
+/*Shared navigation used across every Tutor Search page.*/
+.site-nav,
+.site-nav * {
+    box-sizing: border-box;
+}
+
+.site-nav {
+    display: flex;
+    width: 100%;
+    min-height: 4.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 0.75rem max(1.25rem, calc((100% - 70rem) / 2));
+    border-bottom: 1px solid #d9d0c6;
+    background: #fbf8f2;
+    color: #4a403a;
+    font-family: "Indie Flower", cursive;
+}
+
+.site-nav a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.site-nav__brand {
+    flex: 0 0 auto;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.site-nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+    color: #675b53;
+    font-size: 1.1rem;
+}
+
+.site-nav__link:hover,
+.site-nav__link:focus-visible {
+    color: #d09670;
+}
+
+.site-nav__link[aria-current="page"]:not(.site-nav__link--cta) {
+    color: #a96f4d;
+}
+
+.site-nav__link--cta {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: #d09670;
+    color: #fffaf5 !important;
+}
+
+.site-nav__link--cta:hover,
+.site-nav__link--cta:focus-visible {
+    filter: brightness(0.96);
+}
+
+.site-nav a:focus-visible {
+    outline: 2px solid #d09670;
+    outline-offset: 3px;
+}
+
+@media (max-width: 42rem) {
+    .site-nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .site-nav__links {
+        gap: 0.65rem 1rem;
+    }
+}

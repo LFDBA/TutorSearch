@@ -21,6 +21,7 @@
 
         <!--Search page styles-->
         <link rel="stylesheet" href="search.css">
+        <link rel="stylesheet" href="navbar.css">
 
         <!--Search page scripts-->
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -30,10 +31,20 @@
         <script src="search.js" type="module"></script>
     </head>
     <body>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a class="site-nav__brand" href="index.html">Tutor Search</a>
+
+            <div class="site-nav__links">
+                <a class="site-nav__link" href="index.html">Home</a>
+                <a class="site-nav__link" href="search.html" aria-current="page">Find a tutor</a>
+                <a class="site-nav__link site-nav__link--cta" href="signup.html">Become a tutor</a>
+                <a class="site-nav__link" href="ai.html">AI Usage</a>
+            </div>
+        </nav>
+
         <main class="search-page">
             <!--Search page heading-->
             <header class="search-header">
-                <p class="search-brand">Tutor Search</p>
                 <h1>Find your tutor</h1>
                 <p class="search-intro">Start with the subjects you would like help with.</p>
             </header>

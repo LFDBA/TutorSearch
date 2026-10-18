@@ -28,48 +28,6 @@ a {
     text-decoration: none;
 }
 
-/*Keep the navigation simple and consistent with the rest of the site.*/
-.site-nav {
-    display: flex;
-    min-height: 4.5rem;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    padding: 0.75rem max(1.25rem, calc((100% - 70rem) / 2));
-    border-bottom: 1px solid var(--border-colour);
-    background: var(--nav-background);
-}
-
-.site-nav__brand {
-    color: var(--text-colour);
-    font-size: 1.8rem;
-    font-weight: 700;
-}
-
-.site-nav__links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.75rem;
-    align-items: center;
-    font-size: 1.1rem;
-}
-
-.site-nav__links a {
-    color: var(--muted-text);
-}
-
-.site-nav__links a:last-child {
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    background: var(--terracotta);
-    color: var(--button-text);
-}
-
-.site-nav__links a:not(:last-child):hover,
-.site-nav__links a:not(:last-child):focus-visible {
-    color: var(--terracotta);
-}
-
 main {
     width: min(46rem, calc(100% - 2rem));
     margin: 0 auto;
@@ -81,17 +39,4 @@ main p {
     color: var(--text-colour);
     font-size: clamp(1.35rem, 3vw, 1.7rem);
     line-height: 1.6;
-}
-
-@media (max-width: 38rem) {
-    .site-nav {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-
-    .site-nav__links {
-        gap: 1rem;
-    }
-
 }

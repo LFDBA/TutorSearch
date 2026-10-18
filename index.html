@@ -8,10 +8,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="navbar.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="home.js" type="module"></script>
 </head>
 <body class="ai-images-hidden">
+    <nav class="site-nav" aria-label="Main navigation">
+        <a class="site-nav__brand" href="index.html">Tutor Search</a>
+
+        <div class="site-nav__links">
+            <a class="site-nav__link" href="index.html" aria-current="page">Home</a>
+            <a class="site-nav__link" href="search.html">Find a tutor</a>
+            <a class="site-nav__link site-nav__link--cta" href="signup.html">Become a tutor</a>
+            <a class="site-nav__link" href="ai.html">AI Usage</a>
+        </div>
+    </nav>
+
     <button
         class="ai-image-toggle"
         type="button"

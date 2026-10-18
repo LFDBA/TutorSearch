@@ -54,7 +54,7 @@ main {
 /*Keep the AI-image preference available in the top-left corner*/
 .ai-image-toggle {
     position: fixed;
-    top: 1rem;
+    top: 5.35rem;
     left: 1rem;
     z-index: 10;
     display: flex;
@@ -727,6 +727,10 @@ main {
 
 /*Simplify the hero and search controls on phones*/
 @media (max-width: 42rem) {
+    .ai-image-toggle {
+        top: 9rem;
+    }
+
     .hero {
         width: min(34rem, calc(100% - 1rem));
         padding-top: 4.5rem;
