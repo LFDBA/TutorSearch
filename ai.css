@@ -40,3 +40,37 @@ main p {
     font-size: clamp(1.35rem, 3vw, 1.7rem);
     line-height: 1.6;
 }
+
+main > p + a {
+    margin-top: 2rem;
+}
+
+main > a {
+    display: block;
+    margin-top: 0.75rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-colour);
+    border-left: 0.25rem solid var(--terracotta);
+    border-radius: 0.65rem;
+    background: var(--nav-background);
+    color: var(--text-colour);
+    font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+    line-height: 1.4;
+    text-decoration: underline;
+    text-decoration-color: rgb(208 150 112 / 55%);
+    text-decoration-thickness: 0.08rem;
+    text-underline-offset: 0.2rem;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+main > a:hover {
+    border-color: var(--terracotta);
+    background: var(--button-text);
+    color: #a96f4d;
+    text-decoration-color: currentColor;
+}
+
+main > a:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 0.2rem;
+}

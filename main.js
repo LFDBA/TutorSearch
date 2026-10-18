@@ -1,6 +1,3 @@
-//Show the currently stored tutors while search development is in progress
-console.log(JSON.parse(localStorage.getItem("tutors")));
-
 //Standard language codes
 const languageCodes = [
     "aa", "ab", "ae", "af", "ak", "am", "an", "ar", "as", "av", "ay", "az",

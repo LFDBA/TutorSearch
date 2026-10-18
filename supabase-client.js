@@ -31,7 +31,6 @@ export async function addTutorData(tutor) {
         return false;
     }
 
-    console.log("Inserted!");
     return true;
 }
 

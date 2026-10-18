@@ -131,8 +131,6 @@ const subjectsError = document.querySelector("#subjects-error");
 const availabilityError = document.querySelector("#availability-error");
 const signupSubmitButton = document.querySelector(".signup-submit");
 const signupStatus = document.querySelector("#signup-status");
-const tutorsStorageKey = "tutors";
-const legacyTutorStorageKey = "tutor";
 const maximumProfilePictureSize = 10 * 1024 * 1024;
 
 //Current processed profile picture and its latest loading request
@@ -207,39 +205,6 @@ function setSignupStatus(message = "", type = "") {
 //Check the basic shape of an email address
 function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-//Read the saved tutor array and preserve a tutor stored by the older version
-function getStoredTutors() {
-    const storedTutors = localStorage.getItem(tutorsStorageKey);
-
-    if (storedTutors) {
-        try {
-            const tutors = JSON.parse(storedTutors);
-
-            if (Array.isArray(tutors)) {
-                return tutors;
-            }
-        } catch {
-            //Start a fresh array if the stored value is not valid JSON
-        }
-    }
-
-    const legacyTutor = localStorage.getItem(legacyTutorStorageKey);
-
-    if (legacyTutor) {
-        try {
-            const tutor = JSON.parse(legacyTutor);
-
-            if (tutor && typeof tutor === "object" && !Array.isArray(tutor)) {
-                return [tutor];
-            }
-        } catch {
-            //Ignore an invalid value from the older storage format
-        }
-    }
-
-    return [];
 }
 
 //Get the first visible character of the tutor's name
@@ -1228,11 +1193,6 @@ signupForm.addEventListener("submit", async event => {
             return;
         }
 
-        const tutors = getStoredTutors();
-        tutors.push(tutor);
-        localStorage.setItem(tutorsStorageKey, JSON.stringify(tutors));
-        localStorage.removeItem(legacyTutorStorageKey);
-        console.log("Tutor created:", tutor);
         setSignupStatus(`${name}'s tutor profile was added successfully.`, "success");
     } catch (error) {
         console.error("Tutor creation failed:", error);

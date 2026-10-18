@@ -1,4 +1,4 @@
-/*Tutor card test colour palette*/
+/*Shared tutor card colour palette*/
 :root {
     --page-background: #f3efe7;
     --card-background: #fffdf8;
@@ -6,23 +6,15 @@
     --muted-text: #776d65;
     --border-colour: #d9d0c6;
     --terracotta: #d3a07f;
-    --sage: #aebda5;
     --teal: #9fb8b4;
 }
 
-/*Centre the temporary card test*/
+/*Set the shared page background for tutor-card views*/
 body {
     min-height: 100vh;
     margin: 0;
     background: var(--page-background);
     color: var(--text-colour);
-}
-
-.tutor-cards {
-    box-sizing: border-box;
-    width: min(28rem, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: 2rem 0;
 }
 
 /*Create the main tutor card*/
