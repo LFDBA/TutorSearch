@@ -3,7 +3,6 @@
     --nav-background: #fbf8f2;
     --text-colour: #4a403a;
     --muted-text: #675b53;
-    --border-colour: #d9d0c6;
     --terracotta: #d09670;
     --button-text: #fffaf5;
 }
@@ -49,8 +48,7 @@ main > a {
     display: block;
     margin-top: 0.75rem;
     padding: 0.8rem 1rem;
-    border: 1px solid var(--border-colour);
-    border-left: 0.25rem solid var(--terracotta);
+    border: 1px solid #d9d0c6;
     border-radius: 0.65rem;
     background: var(--nav-background);
     color: var(--text-colour);
